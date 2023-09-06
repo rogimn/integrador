@@ -1,10 +1,12 @@
-# Aplicação da Disciplina de Tópicos Avançados para Web
+# Projeto Integrador
+
+## Plataforma para gerenciar a distribuição de absorventes em escolas públicas
 
 ### Foi desenvolvido em cima das tecnologias:
 
-- Apache 2.4;
-- MariaDB(Mysql) v 11.1.2;
-- PHP v 7.4;
+- Apache v2.4;
+- PostgreSQL v14;
+- PHP v7.4;
 
 ### Passos:
 
