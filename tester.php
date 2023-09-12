@@ -1,9 +1,11 @@
 <?php
 #phpinfo();
 #ini_set('display_errors', 'On');
-#error_reporting(E_ALL);
+error_reporting(E_ALL);
 
-require_once 'config/Database.php';
+require_once 'autoLoad.php';
+
+use Rogim\Integrador\Models\Database;
 
 $database = new Database();
 #print_r($database);

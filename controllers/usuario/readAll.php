@@ -3,7 +3,7 @@
 // chama os arquivos necessários
 
 require_once '../../config/app.php';
-require_once '../../config/Database.php';
+require_once '../../models/Database.php';
 require_once '../../models/Usuario.php';
 
 // controle de sessão

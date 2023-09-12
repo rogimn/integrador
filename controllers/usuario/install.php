@@ -3,7 +3,7 @@
 // call required files
 
 require_once '../../config/app.php';
-require_once '../../config/Database.php';
+require_once '../../models/Database.php';
 require_once '../../models/Usuario.php';
 
 // get database connection
