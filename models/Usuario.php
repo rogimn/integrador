@@ -166,7 +166,7 @@ class Usuario
 
     public function delete()
     {
-        $sql = $this->conn->prepare("CALL procedure_delete_usuario(:monitor,:idusuario)");
+        $sql = $this->conn->prepare("CALL pd_usuario_delete(:monitor,:idusuario)");
         $sql->bindParam(':monitor', $this->monitor, PDO::PARAM_BOOL);
         $sql->bindParam(':idusuario', $this->idusuario, PDO::PARAM_INT);
         $sql->execute();

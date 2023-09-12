@@ -34,7 +34,7 @@ $(document).ready(function () {
             cancelButtonText: 'Não',
         }).then((result) => {
             if(result.value == true) {
-                location.href = '../appLogout.php';
+                location.href = 'sair';
             }
         });
     });

@@ -1,14 +1,16 @@
-ErrorDocument 404 /404.php
-ErrorDocument 500 /500.php
-
 <IfModule mod_rewrite.c>
-    RewriteEngine On
+    #RewriteEngine On
     
-    RewriteBase /integrador
+    #RewriteBase /integrador
     #RewriteBase /
 
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Error
+
+    ErrorDocument 404 /404.php
+    ErrorDocument 500 /500.php
 
     # General URI's
 

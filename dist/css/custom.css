@@ -13,9 +13,13 @@ label {
     margin-bottom: 0.1em !important;
 }
 
-.pl-dl {
-    padding-left: 1.3rem !important;
+.blockquote-data a {
+    display: block;
 }
+
+/*.pl-dl {
+    padding-left: 1.3rem !important;
+}*/
 
 .div-load-page p {
     margin: 0 0 0.8em;

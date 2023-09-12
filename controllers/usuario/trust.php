@@ -50,7 +50,7 @@ if ($filtro == 2) {
             $_SESSION['type'] = $row->tipo;
             $_SESSION['name'] = $row->nome;
             $_SESSION['user'] = $row->usuario;
-            $_SESSION['key'] = $row->created_at;
+            $_SESSION['key'] = session_id();
 
             echo 'true';
         }

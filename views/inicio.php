@@ -6,9 +6,10 @@ include_once '../config/Database.php';
 
 // controle de sessão
 
-if (empty($_SESSION['key'])) {
-    #header ('location: ./');
-    echo 'empty =/';
+if (is_session_started() === TRUE) {
+    if (empty($_SESSION['key'])) {
+        header('location: ./');
+    }
 }
 
 // conecta no banco de dados
@@ -20,7 +21,7 @@ $db = $database->getConnection();
 
 #$cliente = new Cliente($db);
 
-//set variáveis
+//pré-definição de variáveis
 
 $menu = 1;
 $prefix = '../';
@@ -55,8 +56,8 @@ $prefix = '../';
         <div class="wrapper">
 
             <?php
-                include_once ''.$prefix.'appNavBar.php';
-                include_once ''.$prefix.'appSideBar.php';
+            include_once ''.$prefix.'appNavBar.php';
+            include_once ''.$prefix.'appSideBar.php';
             ?>
 
             <!-- Content Wrapper. Contains page content -->
@@ -89,24 +90,24 @@ $prefix = '../';
             <!-- /.Modals -->
 
             <?php
-                include_once ''.$prefix.'appFootBar.php'
+            include_once ''.$prefix.'appFootBar.php';
             ?>
         </div>
         <!-- ./wrapper -->
 
         <!-- jQuery -->
-        <script src="<?= $prefix; ?>plugins/jquery/jquery.min.js"></script>
+        <script src="plugins/jquery/jquery.min.js"></script>
         <!-- Bootstrap 4 -->
-        <script src="<?= $prefix; ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
         <!-- SweetAlert2 -->
-        <script src="<?= $prefix; ?>plugins/sweetalert2/sweetalert2.min.js"></script>
+        <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
         <!-- Input Mask -->
-        <script src="<?= $prefix; ?>plugins/inputmask/jquery.inputmask.min.js"></script>
+        <script src="plugins/inputmask/jquery.inputmask.min.js"></script>
         <!-- AdminLTE App -->
-        <script src="<?= $prefix; ?>dist/js/adminlte.min.js"></script>
+        <script src="dist/js/adminlte.min.js"></script>
         <!-- Custom -->
-        <script defer src="<?= $prefix; ?>dist/js/custom.js"></script>
-        <script defer>
+        <script defer src="dist/js/custom.js"></script>
+        <script>
             $(document).ready(function () {
                 const fade = 150,
                     delay = 100,
@@ -130,18 +131,26 @@ $prefix = '../';
                 (async function pullData() {
                     await $.ajax({
                         type: 'GET',
-                        url: '<?= $prefix; ?>controllers/cliente/readSingle.php',
+                        url: 'controllers/cliente/readSingle.php',
                         dataType: 'json',
                         cache: false,
                         beforeSend: function (result) {
                             $('.div-load-page').removeClass('d-none').html('<p class="p-cog-spin lead text-center"><i class="fas fa-cog fa-spin"></i></p>');
                         },
                         error: function (result) {
-                            Swal.fire({
-                                icon: 'error',
-                                html: result.responseText,
-                                showConfirmButton: false
-                            });
+                            if (result.responseText) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    html: result.responseText,
+                                    showConfirmButton: false
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    html: 'Verifique se o servidor est&aacute; operacional.',
+                                    showConfirmButton: false
+                                });
+                            }
                         },
                         success: function (data) {
                             if (data[0]) {
@@ -178,18 +187,26 @@ $prefix = '../';
                 (async function pullDataMovimentacao() {
                     await $.ajax({
                         type: 'GET',
-                        url: '<?= $prefix; ?>controllers/movimentacao/readAll.php',
+                        url: 'controllers/movimentacao/readAll.php',
                         dataType: 'json',
                         cache: false,
                         beforeSend: function (result) {
                             $('.div-load-page').removeClass('d-none').html('<p class="p-cog-spin lead text-center"><i class="fas fa-cog fa-spin"></i></p>');
                         },
                         error: function(result) {
-                            Swal.fire({
-                                icon: 'error',
-                                html: result.responseText,
-                                showConfirmButton: false
-                            });
+                            if (result.responseText) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    html: result.responseText,
+                                    showConfirmButton: false
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    html: 'Verifique se o servidor est&aacute; operacional.',
+                                    showConfirmButton: false
+                                });
+                            }
                         },
                         success: function(data) {
                             if (data) {
@@ -277,8 +294,8 @@ $prefix = '../';
                 $('.form-deposit').submit(function (e) {
                     e.preventDefault();
 
-                    $.post('<?= $prefix; ?>controllers/movimentacao/insert.php', $(this).serialize(), function (data) {
-                        $('.btn-deposit').html('<img src="<?= $prefix; ?>dist/img/rings.svg" class="loader-svg">').fadeTo(fade, 1);
+                    $.post('controllers/movimentacao/insert.php', $(this).serialize(), function (data) {
+                        $('.btn-deposit').html('<img src="dist/img/rings.svg" class="loader-svg">').fadeTo(fade, 1);
 
                         switch (data) {
                             case 'true':
@@ -317,8 +334,8 @@ $prefix = '../';
                             title: 'O valor não pode exceder o limite.'
                         });
                     } else {
-                        $.post('<?= $prefix; ?>controllers/movimentacao/insert.php', $(this).serialize(), function (data) {
-                            $('.btn-redeem').html('<img src="<?= $prefix; ?>dist/img/rings.svg" class="loader-svg">').fadeTo(fade, 1);
+                        $.post('controllers/movimentacao/insert.php', $(this).serialize(), function (data) {
+                            $('.btn-redeem').html('<img src="dist/img/rings.svg" class="loader-svg">').fadeTo(fade, 1);
 
                             switch (data) {
                                 case 'true':

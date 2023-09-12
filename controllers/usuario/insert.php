@@ -15,25 +15,6 @@ $db = $database->getConnection();
 
 $usuario = new Usuario($db);
 
-/*// function for encrypt password by openssl
-
-function encrypt($data, $key)
-{
-    $len = strlen($key);
-
-    if ($len < 16) {
-        $key = str_repeat($key, ceil(16 / $len));
-        $m = strlen($data) % 8;
-        $data .= str_repeat("\x00", 8 - $m);
-        $val = openssl_encrypt($data, 'AES-256-OFB', $key, 0, $key);
-        $val = base64_encode($val);
-    } else {
-        die('N&atilde;o foi poss&iacute;vel criptografar o acesso.');
-    }
-
-    return $val;
-}*/
-
 // filtering the inputs
 
 if (empty($_POST['rand'])) {

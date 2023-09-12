@@ -82,7 +82,7 @@ if ($sql->rowCount() == 0) {
 
                 <form class="form-login">
                     <div class="input-group mb-3">
-                        <input type="text" name="usuario" id="usuario" class="form-control" minlength="3" maxlength="15" placeholder="Usu&aacute;rio" required>
+                        <input type="text" name="usuario" id="usuario" class="form-control" minlength="3" maxlength="15" autocomplete="usuario" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="Usu&aacute;rio" required>
                         
                         <div class="input-group-append">
                             <div class="input-group-text">
@@ -92,7 +92,7 @@ if ($sql->rowCount() == 0) {
                     </div>
                     
                     <div class="input-group mb-3">
-                        <input type="password" name="senha" id="senha" class="form-control" minlength="4" maxlength="15" placeholder="Senha" required>
+                        <input type="password" name="senha" id="senha" class="form-control" minlength="4" maxlength="15" autocomplete="senha" spellcheck="false" autocorrect="off" autocapitalize="off" placeholder="Senha" required>
                         
                         <div class="input-group-append">
                             <div class="input-group-text">

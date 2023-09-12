@@ -8,8 +8,8 @@
         private $host = 'localhost';
         private $port = '5432';
         private $dbname = 'integrador';
-        private $user = 'postgres';
-        private $pass = 'postgres';
+        private $user = 'rogim';
+        private $pass = '';
         private $options = '--client_encoding=UTF8';
         public $conn;
 
