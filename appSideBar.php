@@ -40,15 +40,59 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="inicio" class="nav-link" title="Escolas">
+                            <a href="escolas" class="nav-link" title="Escolas">
                                 <i class="nav-icon fas fa-school"></i>
                                 <p>Escolas</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="inicio" class="nav-link" title="Alunas">
+                            <a href="pessoas" class="nav-link" title="Pessoas">
                                 <i class="nav-icon fas fa-user"></i>
-                                <p>Alunas</p>
+                                <p>Pessoas</p>
+                            </a>
+                        </li>';
+                    break;
+
+                    case 2:
+                        echo'
+                        <li class="nav-item">
+                            <a href="inicio" class="nav-link" title="In&iacute;cio">
+                                <i class="nav-icon fas fa-home"></i>
+                                <p>In&iacute;cio</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="escolas" class="nav-link active" title="Escolas">
+                                <i class="nav-icon fas fa-school"></i>
+                                <p>Escolas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pessoas" class="nav-link" title="Pessoas">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>Pessoas</p>
+                            </a>
+                        </li>';
+                    break;
+
+                    case 3:
+                        echo'
+                        <li class="nav-item">
+                            <a href="inicio" class="nav-link" title="In&iacute;cio">
+                                <i class="nav-icon fas fa-home"></i>
+                                <p>In&iacute;cio</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="escolas" class="nav-link" title="Escolas">
+                                <i class="nav-icon fas fa-school"></i>
+                                <p>Escolas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pessoas" class="nav-link active" title="Pessoas">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>Pessoas</p>
                             </a>
                         </li>';
                     break;
@@ -59,6 +103,18 @@
                             <a href="inicio" class="nav-link" title="In&iacute;cio">
                                 <i class="nav-icon fas fa-home"></i>
                                 <p>In&iacute;cio</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="escolas" class="nav-link" title="Escolas">
+                                <i class="nav-icon fas fa-school"></i>
+                                <p>Escolas</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pessoas" class="nav-link" title="Pessoas">
+                                <i class="nav-icon fas fa-user"></i>
+                                <p>Pessoas</p>
                             </a>
                         </li>';
                     break;

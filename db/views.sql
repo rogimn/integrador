@@ -18,9 +18,9 @@ FROM usuarios;
 /* View que lista todas as escolas */
 
 CREATE VIEW vw_escolas (
-    idescola, codigo, nome, cep, endereco, bairro, cidade, uf, celular, telefone, email, observacao
+    idescola, codigo, nome, cep, logradouro, numero, bairro, cidade, uf, celular, telefone, email, observacao, monitor
 )
-AS SELECT idescola, codigo, nome, cep, endereco, bairro, cidade, uf, celular, telefone, email, observacao
+AS SELECT idescola, codigo, nome, cep, logradouro, numero, bairro, cidade, uf, celular, telefone, email, observacao, monitor
 FROM escolas;
 
 --SELECT * FROM vw_escolas ORDER BY nome, bairro, email;

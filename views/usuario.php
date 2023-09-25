@@ -14,7 +14,7 @@ if (is_session_started() === TRUE) {
 
 //pré-definição de variáveis
 
-$menu = 1;
+$menu = 0;
 $prefix = '../';
 ?>
 
@@ -22,11 +22,14 @@ $prefix = '../';
 <html lang="<?= $cfg['lang']; ?>">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=5">
-        <title><?= $cfg['header']['title'] . $cfg['header']['subtitle']['user']; ?></title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>
+            <?= $cfg['header']['title'] . $cfg['header']['subtitle']['user']; ?>
+        </title>
 
         <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <link rel="preload prefetch stylesheet" as="style" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
         <!-- Favicon -->
         <link rel="icon" type="image/png" href="dist/img/favicon.png">
@@ -61,23 +64,26 @@ $prefix = '../';
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <div class="container-fluid">
-                        <div class="row mb-2">
-                            <div class="col-sm-6">
+                        <div class="row mb-1 mt-1">
+                            <div class="col-7">
                                 <h1><?= $cfg['header']['subtitle']['user']; ?></h1>
                             </div>
-                            <div class="col-sm-6">
+                            <div class="col-5">
                                 
                             <?php
                                 if ($_SESSION['type'] == true) {
                             ?>
 
-                                <div class="float-sm-right">
+                                <div class="text-right">
                                     <a href="#" class="btn btn-primary" title="Clique para cadastrar um novo usu&aacute;rio" data-toggle="modal" data-target="#modal-new-usuario">
                                         <i class="fas fa-user"></i> Novo usu&aacute;rio
                                     </a>
                                 </div>
 
-                            <?php } ?>
+                            <?php
+                                }
+                            ?>
+                            
                             </div>
                         </div>
                     </div>
@@ -444,7 +450,7 @@ $prefix = '../';
 
                         swalButton.fire({
                             icon: 'question',
-                            title: 'Excluir o usu&aacute;rio',
+                            title: 'Desativar o usu&aacute;rio',
                             showCancelButton: true,
                             confirmButtonText: 'Sim',
                             cancelButtonText: 'Não'
@@ -467,14 +473,14 @@ $prefix = '../';
                                         if (data == true) {
                                             Toast.fire({
                                                 icon: 'success',
-                                                title: 'Usu&aacute;rio exclu&iacute;do.'
+                                                title: 'Usu&aacute;rio desativado.'
                                             }).then((result) => {
                                                 window.setTimeout("location.href='usuario'", delay);
                                             });
                                         } else {
                                             Toast.fire({
                                                 icon: 'success',
-                                                title: 'Usu&aacute;rio exclu&iacute;do.'
+                                                title: 'Usu&aacute;rio desativado.'
                                             }).then((result) => {
                                                 window.setTimeout("location.href='index'", delay);
                                             });
@@ -490,4 +496,4 @@ $prefix = '../';
 </html>
 
 <?php
-unset($cfg,$menu,$prefix);
+unset($cfg, $menu, $prefix);

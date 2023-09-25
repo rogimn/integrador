@@ -1,12 +1,7 @@
 <?php
 class Usuario
 {
-    // database connection
-
     private $conn;
-
-    // object properties
-
     public $idusuario;
     public $tipo;
     public $nome;
@@ -15,28 +10,28 @@ class Usuario
     public $email;
     public $monitor;
 
-    // constructor with $db as database connection
+    // construtor da conexão com o banco
 
     public function __construct($db)
     {
         $this->conn = $db;
     }
 
-    // check for records
+    // procura por registros
 
     public function check()
     {
         return $this->conn->query("SELECT idusuario FROM vw_usuarios");
     }
 
-    // truncate table
+    // limpa a tabela
 
     public function truncate()
     {
         return $this->conn->query("TRUNCATE TABLE usuarios");
     }
 
-    // validate login data
+    // verificação do login
 
     public function trust()
     {
@@ -48,7 +43,7 @@ class Usuario
         return $sql;
     }
 
-    // read all records
+    // lê todos os registros
 
     public function readAll()
     {
@@ -59,7 +54,7 @@ class Usuario
         return $sql;
     }
 
-    // read single record
+    // lê um registro
 
     public function readSingle()
     {
@@ -70,9 +65,9 @@ class Usuario
         return $sql;
     }
 
-    // check for same record on insert
+    // verifica pelo mesmo registro antes de inserir
 
-    public function userInsertExist()
+    public function recordInsertExist()
     {
         $sql = $this->conn->prepare("SELECT idusuario FROM vw_usuarios WHERE email = :email");
         $sql->bindParam(':email', $this->email, PDO::PARAM_STR);
@@ -85,11 +80,11 @@ class Usuario
         }
     }
 
-    // install
+    // instalação
 
     public function install()
     {
-        if ($this->userInsertExist()) {
+        if ($this->recordInsertExist()) {
             die('Esse e-mail j&aacute; est&aacute; vinculado em uma conta.');
         } else {
             // cadastra o usuário
@@ -106,11 +101,11 @@ class Usuario
         }
     }
 
-    // insert record
+    // insere um registro
 
     public function insert()
     {
-        if ($this->userInsertExist()) {
+        if ($this->recordInsertExist()) {
             die('Esse e-mail j&aacute; est&aacute; vinculado em uma conta.');
         } else {
             $sql = $this->conn->prepare("CALL pd_usuario_insert(:tipo,:nome,:usuario,:senha,:email)");
@@ -125,9 +120,9 @@ class Usuario
         }
     }
 
-    // check for same record on update
+    // verifica pelo mesmo registro antes de atualizar
 
-    public function userUpdateExist()
+    public function recordUpdateExist()
     {
         $sql = $this->conn->prepare("SELECT idusuario FROM vw_usuarios WHERE email = :email AND idusuario <> :idusuario");
         $sql->bindParam(':email', $this->email, PDO::PARAM_STR);
@@ -141,11 +136,11 @@ class Usuario
         }
     }
 
-    // update record
+    // atualiza o registro
 
     public function update()
     {
-        if ($this->userUpdateExist()) {
+        if ($this->recordUpdateExist()) {
             die('Essa usu&aacute;rio j&aacute; est&aacute; cadastrado.');
         } else {
             $sql = $this->conn->prepare("CALL pd_usuario_update(:tipo,:nome,:usuario,:senha,:email,:idusuario)");
@@ -161,7 +156,7 @@ class Usuario
         }
     }
 
-    // delete record
+    // inativa o registro
 
     public function delete()
     {

@@ -24,9 +24,8 @@
     # Main URI's
     
     RewriteRule ^inicio/?$ views/inicio.php [NC,L]
-    #RewriteRule ^cliente/?$ views/cliente.php [NC,L]
-    #RewriteRule ^produto/?$ views/produto.php [NC,L]
-    #RewriteRule ^caixa/?$ views/caixa.php [NC,L]
+    RewriteRule ^escolas/?$ views/escola.php [NC,L]
+    RewriteRule ^pessoas/?$ views/pessoa.php [NC,L]
     RewriteRule ^usuario/?$ views/usuario.php [NC,L]
 
     # Especial Cases
@@ -36,40 +35,38 @@
 
     # Components URI's
 
-    #RewriteRule ^loadCEP/?$ components/loadCEP.php [L]
+    RewriteRule ^loadCEP/?$ components/loadCEP.php [L]
     #RewriteRule ^loadCNPJ/?$ components/loadCNPJ.php [L]
     #RewriteRule ^loadCPF/?$ components/loadCPF.php [L]
 
     # Read URI's
 
+    RewriteRule ^escolaReadAll/?$ controllers/escola/readAll.php [L]
+    RewriteRule ^pessoaReadAll/?$ controllers/pessoa/readAll.php [L]
     RewriteRule ^usuarioReadAll/?$ controllers/usuario/readAll.php [L]
 
     # Insert URI's
 
-    #RewriteRule ^clienteInsert/?$ controllers/cliente/insert.php [L]
-    #RewriteRule ^produtoInsert/?$ controllers/produto/insert.php [L]
-    #RewriteRule ^pedidoInsert/?$ controllers/pedido/insert.php [L]
+    RewriteRule ^escolaInsert/?$ controllers/escola/insert.php [L]
+    RewriteRule ^pessoaInsert/?$ controllers/pessoa/insert.php [L]
     RewriteRule ^usuarioInsert/?$ controllers/usuario/insert.php [L]
 
     # Edit URI's
 
-    #RewriteRule ^clienteEdit/([A-Za-z0-9]+)$ views/clienteEdit.php?2a826b467343694898894908cd75fafe=$1 [L]
-    #RewriteRule ^produtoEdit/([A-Za-z0-9]+)$ views/produtoEdit.php?e8c7475fdc16097f93c00b2f67694119=$1 [L]
-    #RewriteRule ^pedidoEdit/([A-Za-z0-9]+)$ views/pedidoEdit.php?e47a3aa7704b671a27108d49f146b8fc=$1 [L]
+    RewriteRule ^escolaEdit/([A-Za-z0-9]+)$ views/escolaEdit.php?2a0da8ad06a96827787ed16254376d10=$1 [L]
+    RewriteRule ^pessoaEdit/([A-Za-z0-9]+)$ views/pessoaEdit.php?5b9f3257ab6a7a150f20f7d4f228559b=$1 [L]
     RewriteRule ^usuarioEdit/([A-Za-z0-9]+)/([A-Za-z0-9]+)$ views/usuarioEdit.php?78eafd55d38a6cdcf6611ca998b01e44=$1&f8032d5cae3de20fcec887f395ec9a6a=$2 [L]
 
     # Update URI's
 
-    #RewriteRule ^clienteUpdate/?$ controllers/cliente/update.php [L]
-    #RewriteRule ^produtoUpdate/?$ controllers/produto/update.php [L]
-    #RewriteRule ^pedidoUpdate/?$ controllers/pedido/update.php [L]
+    RewriteRule ^escolaUpdate/?$ controllers/escola/update.php [L]
+    RewriteRule ^pessoaUpdate/?$ controllers/pessoa/update.php [L]
     RewriteRule ^usuarioUpdate/?$ controllers/usuario/update.php [L]
 
     # Delete URI's
     
-    #RewriteRule ^clienteDelete/([A-Za-z0-9]+)$ controllers/cliente/delete.php?2a826b467343694898894908cd75fafe=$1 [L]
-    #RewriteRule ^produtoDelete/([A-Za-z0-9]+)$ controllers/produto/delete.php?e8c7475fdc16097f93c00b2f67694119=$1 [L]
-    #RewriteRule ^pedidoDelete/([A-Za-z0-9]+)$ controllers/pedido/delete.php?e47a3aa7704b671a27108d49f146b8fc=$1 [L]
+    RewriteRule ^escolaDelete/([A-Za-z0-9]+)$ controllers/escola/delete.php?2a0da8ad06a96827787ed16254376d10=$1 [L]
+    RewriteRule ^pessoaDelete/([A-Za-z0-9]+)$ controllers/pessoa/delete.php?5b9f3257ab6a7a150f20f7d4f228559b=$1 [L]
     RewriteRule ^usuarioDelete/([A-Za-z0-9]+)$ controllers/usuario/delete.php?78eafd55d38a6cdcf6611ca998b01e44=$1 [L]
 
     #Forçar HTTPS

@@ -40,7 +40,7 @@ END;
 $$ LANGUAGE 'plpgsql';
 
 CREATE TRIGGER tg_registra_log
-AFTER INSERT OR UPDATE OR DELETE ON alunas
+AFTER INSERT OR UPDATE OR DELETE ON pessoas
 FOR EACH ROW EXECUTE PROCEDURE fn_register_log();
 
 CREATE TRIGGER tg_registra_log

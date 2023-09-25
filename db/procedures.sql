@@ -51,14 +51,15 @@ $$ LANGUAGE 'plpgsql';
 
 /* Procedure que insere uma nova escola */
 
-CREATE OR REPLACE PROCEDURE pd_insert_escola(
+CREATE OR REPLACE PROCEDURE pd_escola_insert(
 	a_codigo VARCHAR(20),
     a_nome VARCHAR(200),
 	a_cep VARCHAR(8),
-	a_endereco VARCHAR(200),
+	a_logradouro VARCHAR(200),
+	a_numero VARCHAR(10),
 	a_bairro VARCHAR(100),
 	a_cidade VARCHAR(100),
-	a_estado CHAR(2),
+	a_uf CHAR(2),
 	a_celular VARCHAR(11),
 	a_telefone VARCHAR(11),
 	a_email VARCHAR(100),
@@ -66,9 +67,40 @@ CREATE OR REPLACE PROCEDURE pd_insert_escola(
 )
 AS $$
 BEGIN	
-	INSERT INTO escolas (codigo, nome, cep, endereco, bairro, cidade, uf, telefone, celular, email, observacao)
-	VALUES (a_codigo, a_nome, a_cep, a_endereco, a_bairro, a_cidade, a_uf, a_telefone, a_celular, a_email, a_observacao);
+	INSERT INTO escolas (codigo, nome, cep, logradouro, numero, bairro, cidade, uf, telefone, celular, email, observacao)
+	VALUES (a_codigo, a_nome, a_cep, a_logradouro, a_numero, a_bairro, a_cidade, a_uf, a_telefone, a_celular, a_email, a_observacao);
 END;
 $$ LANGUAGE 'plpgsql';
 
 --CALL pd_insert_escola('Nome do Cliente', '0', '23497510922', '88340000', 'Rua 10, 9', 'Bairro', 'Cidade', 'AC', '47988774433', '4734009988', 'nome@cliente.com', 'obs');
+
+/* Procedure que atualiza uma escola */
+
+CREATE OR REPLACE PROCEDURE pd_escola_update(
+    a_nome VARCHAR(200),
+	a_cep VARCHAR(8),
+	a_logradouro VARCHAR(200),
+	a_numero VARCHAR(10),
+	a_bairro VARCHAR(100),
+	a_cidade VARCHAR(100),
+	a_uf CHAR(2),
+	a_celular VARCHAR(11),
+	a_telefone VARCHAR(11),
+	a_email VARCHAR(100),
+	a_observacao TEXT,
+	a_idescola INTEGER
+)
+AS $$
+BEGIN	
+	UPDATE escolas SET nome = a_nome, cep = a_cep, logradouro = a_logradouro, numero = a_numero, bairro = a_bairro, cidade = a_cidade, uf = a_uf, telefone = a_telefone, celular = a_celular, email = a_email, observacao = a_observacao WHERE idescola = a_idescola;
+END;
+$$ LANGUAGE 'plpgsql';
+
+/* Procedure que desativa uma escola */
+
+CREATE OR REPLACE PROCEDURE pd_escola_delete(a_monitor BOOLEAN, a_idescola INTEGER)
+AS $$
+BEGIN
+	UPDATE escolas SET monitor = a_monitor WHERE idescola = a_idescola;
+END;
+$$ LANGUAGE 'plpgsql';

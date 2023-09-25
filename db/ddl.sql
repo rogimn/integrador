@@ -22,14 +22,15 @@ CREATE TABLE escolas (
     idescola SERIAL NOT NULL,
     codigo VARCHAR(20) UNIQUE NOT NULL,
     nome VARCHAR(200) NOT NULL,
-    cep VARCHAR(9),
-    endereco VARCHAR(200),
+    cep VARCHAR(9) NOT NULL,
+    logradouro VARCHAR(200) NOT NULL,
+    numero VARCHAR(10) NOT NULL,
     bairro VARCHAR(100) NOT NULL,
-    cidade VARCHAR(100),
-    uf CHAR(2),
+    cidade VARCHAR(100) NOT NULL,
+    uf CHAR(2) NOT NULL,
     telefone VARCHAR(15),
     celular VARCHAR(15),
-    email VARCHAR(100),
+    email VARCHAR(100) NOT NULL,
     observacao TEXT,
     monitor BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -37,24 +38,25 @@ CREATE TABLE escolas (
     CONSTRAINT escolas_pkey PRIMARY KEY(idescola)
 );
 
-CREATE TABLE alunas (
-    idaluna SERIAL NOT NULL,
+CREATE TABLE pessoas (
+    idpessoa SERIAL NOT NULL,
     fk_escolas_idescola INTEGER NOT NULL,
     matricula VARCHAR(20) UNIQUE NOT NULL,
     nome VARCHAR(200) NOT NULL,
-    cep VARCHAR(9),
-    endereco VARCHAR(200),
+    cep VARCHAR(9) NOT NULL,
+    logradouro VARCHAR(200) NOT NULL,
+    numero VARCHAR(10) NOT NULL,
     bairro VARCHAR(100) NOT NULL,
-    cidade VARCHAR(100),
-    uf CHAR(2),
+    cidade VARCHAR(100) NOT NULL,
+    uf CHAR(2) NOT NULL,
     celular VARCHAR(15),
     telefone VARCHAR(15),
-    email VARCHAR(100),
+    email VARCHAR(100) NOT NULL,
     observacao TEXT,
     monitor BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP,
-    CONSTRAINT alunas_pkey PRIMARY KEY(idaluna)
+    CONSTRAINT pessoas_pkey PRIMARY KEY(idpessoa)
 );
 
 CREATE TABLE usuarios (
@@ -84,7 +86,7 @@ CREATE TABLE notas (
 CREATE TABLE entregas (
     identrega SERIAL NOT NULL,
     fk_usuarios_idusuario INTEGER NOT NULL,
-    fk_alunas_idaluna INTEGER NOT NULL,
+    fk_pessoas_idpessoa INTEGER NOT NULL,
     codigo VARCHAR(10) UNIQUE NOT NULL,
     datado DATE NOT NULL,
     quantidade INTEGER NOT NULL,
@@ -94,14 +96,14 @@ CREATE TABLE entregas (
     CONSTRAINT entregas_pkey PRIMARY KEY(identrega)
 );
 
-ALTER TABLE alunas ADD CONSTRAINT FK_alunas_2
+ALTER TABLE pessoas ADD CONSTRAINT FK_pessoas_2
     FOREIGN KEY (fk_escolas_idescola)
     REFERENCES escolas (idescola)
     ON DELETE CASCADE;
 
 ALTER TABLE entregas ADD CONSTRAINT FK_entregas_2
-    FOREIGN KEY (fk_alunas_idaluna)
-    REFERENCES alunas (idaluna)
+    FOREIGN KEY (fk_pessoas_idpessoa)
+    REFERENCES pessoas (idpessoa)
     ON DELETE CASCADE;
 
 ALTER TABLE entregas ADD CONSTRAINT FK_entregas_3

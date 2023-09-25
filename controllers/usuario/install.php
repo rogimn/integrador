@@ -59,11 +59,11 @@ if (empty($_POST['email'])) {
     }
 }
 
-$usuario->tipo = 1;
-
 // check for all required inputs, call method install and return
 
 if ($filtro == 4) {
+    $usuario->tipo = 1;
+
     if ($usuario->install()) {
         echo 'true';
         rename('../../appInstall.php', '../../appInstallDone.php');
@@ -74,4 +74,4 @@ if ($filtro == 4) {
     die($cfg['var_required']);
 }
 
-unset($cfg, $data, $key, $len, $m, $val, $database, $db, $usuario, $enigma, $filtro);
+unset($cfg, $data, $key, $len, $m, $val, $database, $db, $usuario, $filtro);

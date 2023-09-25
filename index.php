@@ -54,7 +54,7 @@ if ($sql->rowCount() == 0) {
     </title>
 
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="preload prefetch stylesheet" as="style" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="dist/img/favicon.png">
