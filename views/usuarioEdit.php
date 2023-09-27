@@ -1,13 +1,13 @@
 <?php
 
-// clear cache
+// limpa o cache
 
 header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
-// require and includes
+// chama os arquivos necessários
 
 require_once '../config/app.php';
 include_once '../models/Database.php';
@@ -21,28 +21,25 @@ if (is_session_started() === TRUE) {
     }
 }
 
-// get database connection
+// abre a conexão com o banco
 
 $database = new Database();
 $db = $database->getConnection();
 
-// prepare objects
+// inicializa uma instância da classe
 
 $usuario = new Usuario($db);
 
-// GET variables
+// Variáveis de controle
 
-$py_idusuario = md5('idusuario');
-$py_usuario = md5('usuario');
-$usuario->idusuario = $_GET['' . $py_idusuario . ''];
-#$usuario->nome = $_GET[''.$py_usuario.''];
+$usuario->idusuario = $_GET['' . $cfg['id']['usuario'] . ''];
 
-// retrieve query
+// executa a consulta e retorna
 
 if ($sql = $usuario->readSingle()) {
     if ($sql->rowCount() > 0) {
         $row = $sql->fetch(PDO::FETCH_OBJ);
-        ?>
+?>
 
         <form class="form-edit-usuario">
             <div class="modal-header">
@@ -63,21 +60,25 @@ if ($sql = $usuario->readSingle()) {
                         <label class="text text-danger" for="tipo">Tipo</label>
                     </div>
                     <div class="col-10">
-                        <?php
+                    
+                    <?php
+
                         switch ($row->tipo) {
                             case true:
-                                echo '
-                        <span class="form-icheck"><input type="radio" name="tipo" value="true" checked> Administrador</span>
-                        <span class="form-icheck"><input type="radio" name="tipo" value="false"> Comum</span>';
+                                echo
+                                '<span class="form-icheck"><input type="radio" name="tipo" value="true" checked> Administrador</span>
+                                <span class="form-icheck"><input type="radio" name="tipo" value="false"> Comum</span>';
                                 break;
 
                             case false:
-                                echo '
-                        <span class="form-icheck"><input type="radio" name="tipo" value="true"> Administrador</span>
-                        <span class="form-icheck"><input type="radio" name="tipo" value="false" checked> Comum</span>';
+                                echo
+                                '<span class="form-icheck"><input type="radio" name="tipo" value="true"> Administrador</span>
+                                <span class="form-icheck"><input type="radio" name="tipo" value="false" checked> Comum</span>';
                                 break;
                         }
-                        ?>
+
+                    ?>
+
                     </div>
                 </div>
                 <div class="row form-group g-3 align-items-center">
@@ -89,6 +90,7 @@ if ($sql = $usuario->readSingle()) {
                             value="<?= $row->nome; ?>" placeholder="Nome" required>
                     </div>
                 </div>
+
                 <div class="row form-group g-3 align-items-center">
                     <div class="col-2">
                         <label class="text text-danger" for="usuario">Usu&aacute;rio</label>
@@ -98,6 +100,7 @@ if ($sql = $usuario->readSingle()) {
                             value="<?= decrypt($row->usuario, $cfg['enigma']); ?>" placeholder="Usu&aacute;rio" required>
                     </div>
                 </div>
+
                 <div class="row form-group g-3 align-items-center">
                     <div class="col-2">
                         <label class="text text-danger" for="senha">Senha</label>
@@ -108,6 +111,7 @@ if ($sql = $usuario->readSingle()) {
                             autocorrect="off" autocapitalize="off" placeholder="Senha" required>
                     </div>
                 </div>
+
                 <div class="row form-group g-3 align-items-center">
                     <div class="col-2">
                         <label class="text text-danger" for="senha">E-mail</label>
@@ -118,12 +122,19 @@ if ($sql = $usuario->readSingle()) {
                     </div>
                 </div>
             </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                <button type="submit" class="btn btn-primary btn-edit-usuario">Salvar</button>
+            <div class="modal-footer d-flex">
+                <div class="mr-auto">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                </div>
+
+                <div class="ml-auto">
+                    <button type="reset" class="btn btn-secondary">Restaurar dados iniciais</button>
+                    <button type="submit" class="btn btn-primary btn-edit-usuario">Salvar</button>
+                </div>
             </div>
         </form>
-        <script defer>
+
+        <script>
             $(document).ready(function () {
                 const fade = 150,
                     delay = 100,
@@ -162,7 +173,7 @@ if ($sql = $usuario->readSingle()) {
                                 Toast
                                     .fire({ icon: 'success', title: 'Usu&aacute;rio editado.' })
                                     .then((result) => {
-                                        window.setTimeout("location.href='usuario'", delay);
+                                        window.setTimeout("location.href='usuarios'", delay);
                                     });
                                 break;
 
@@ -178,16 +189,17 @@ if ($sql = $usuario->readSingle()) {
                 });
             });
         </script>
-        <?php
+
+<?php
     } else {
-        echo '
-            <blockquote class="quote-danger">
-                <h5>Erro!</h5>
-                <p>O usu&aacute;rio não foi encontrado.</p>
-            </blockquote>';
+        echo
+        '<blockquote class="quote-danger">
+            <h5>' . $cfg['error']['title'] . '</h5>
+            <p>' . $cfg['error']['msg'] . '</p>
+        </blockquote>';
     }
 } else {
     die(var_dump($db->errorInfo()));
 }
 
-unset($cfg, $data, $key, $len, $val, $database, $db, $usuario, $py_idusuario, $py_usuario, $sql, $row);
+unset($cfg, $database, $db, $usuario, $sql, $row);

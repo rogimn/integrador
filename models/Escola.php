@@ -49,6 +49,17 @@ class Escola
         return $sql;
     }
 
+    // lê um único registro
+
+    public function readSingle()
+    {
+        $sql = $this->conn->prepare("SELECT * FROM vw_escolas WHERE idescola = :idescola");
+        $sql->bindParam(':idescola', $this->idescola, PDO::PARAM_INT);
+        $sql->execute();
+
+        return $sql;
+    }
+
     // verifica pelo mesmo registro antes de inserir
 
     public function recordInsertExist()

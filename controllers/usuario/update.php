@@ -20,6 +20,7 @@ $usuario = new Usuario($db);
 if (empty($_POST['rand'])) {
     die($cfg['var_required']);
 }
+
 if (empty($_POST['idusuario'])) {
     die($cfg['var_required']);
 } else {

@@ -302,7 +302,7 @@ $prefix = '../';
                                             + '<td>' + data[i].usuario + '</td>'
                                             + '<td>' + data[i].email + '</td>'
                                             + '<td class="td-action">'
-                                            + '<span class="bg bg-success"><a class="fas fa-user-check" title="Usu&aacute;rio logado"></a></span>'
+                                            + '<span class="bg bg-success mr-2"><a class="fas fa-user-check" title="Usu&aacute;rio logado"></a></span>'
                                             + '<span class="bg bg-warning"><a class="fas fa-pen a-edit-usuario" href="usuarioEdit/' + data[i].idusuario + '/' + data[i].usuario + '" title="Editar usu&aacute;rio"></a></span>'
                                             + '</td></tr>';
                                         } else {
@@ -312,7 +312,7 @@ $prefix = '../';
                                                 + '<td>' + data[i].usuario + '</td>'
                                                 + '<td>' + data[i].email + '</td>'
                                                 + '<td class="td-action">'
-                                                + '<span class="bg bg-warning"><a class="fas fa-pen a-edit-usuario" href="usuarioEdit/' + data[i].idusuario + '/comum" title="Editar usu&aacute;rio"></a></span>'
+                                                + '<span class="bg bg-warning mr-2"><a class="fas fa-pen a-edit-usuario" href="usuarioEdit/' + data[i].idusuario + '/comum" title="Editar usu&aacute;rio"></a></span>'
                                                 + '<span class="bg bg-danger"><a class="fas fa-trash a-delete-usuario" id="<?= $cfg['id']['usuario']; ?>-' + data[i].idusuario + '" href="#" title="Excluir usu&aacute;rio"></a></span>'
                                                 + '</td></tr>';
                                             }
@@ -421,7 +421,7 @@ $prefix = '../';
                                     icon: 'success',
                                     title: 'Usu&aacute;rio cadastrado.'
                                 }).then((result) => {
-                                    window.setTimeout("location.href='usuario'", delay);
+                                    window.setTimeout("location.href='usuarios'", delay);
                                 });
                                 break;
 
@@ -475,7 +475,7 @@ $prefix = '../';
                                                 icon: 'success',
                                                 title: 'Usu&aacute;rio desativado.'
                                             }).then((result) => {
-                                                window.setTimeout("location.href='usuario'", delay);
+                                                window.setTimeout("location.href='usuarios'", delay);
                                             });
                                         } else {
                                             Toast.fire({

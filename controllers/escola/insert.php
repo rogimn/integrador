@@ -123,4 +123,4 @@ if ($filtro == 8) {
     die($cfg['var_required']);
 }
 
-unset($cfg, $data, $key, $len, $m, $val, $database, $db, $escola, $enigma, $filtro);
+unset($cfg, $database, $db, $escola, $filtro);

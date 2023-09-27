@@ -26,7 +26,7 @@
     RewriteRule ^inicio/?$ views/inicio.php [NC,L]
     RewriteRule ^escolas/?$ views/escola.php [NC,L]
     RewriteRule ^pessoas/?$ views/pessoa.php [NC,L]
-    RewriteRule ^usuario/?$ views/usuario.php [NC,L]
+    RewriteRule ^usuarios/?$ views/usuario.php [NC,L]
 
     # Especial Cases
 

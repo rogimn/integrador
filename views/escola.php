@@ -302,7 +302,7 @@ $prefix = '../';
             </div>
 
             <div class="modal fade" id="modal-edit-escola">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-xl">
                     <div class="modal-content"></div>
                 </div>
             </div>
@@ -390,7 +390,7 @@ $prefix = '../';
                         }
                     } else {
                         $('#cep').val('');
-                        $('.msg-documento').css('display', 'none');
+                        $('.msg-cep').css('display', 'none');
                     }
                 });
 
