@@ -9,8 +9,10 @@
 
     # Error
 
-    ErrorDocument 404 /404.php
-    ErrorDocument 500 /500.php
+    ErrorDocument 404 '<h1>ARQUIVO N&Atilde;O ENCONTRADO!</h1><a href="./" title="Voltar">VOLTAR</a>'
+    ErrorDocument 500 '<h1>OCORREU UM ERRO NO SERVIDOR!</h1><a href="./" title="Voltar">VOLTAR</a>'
+    #ErrorDocument 500 /ifc/integrador/500.php
+    #ErrorDocument 404 /ifc/integrador/404.php
 
     # General URI's
 
@@ -42,30 +44,35 @@
     # Read URI's
 
     RewriteRule ^escolaReadAll/?$ controllers/escola/readAll.php [L]
+    RewriteRule ^notaReadAll/?$ controllers/nota/readAll.php [L]
     RewriteRule ^pessoaReadAll/?$ controllers/pessoa/readAll.php [L]
     RewriteRule ^usuarioReadAll/?$ controllers/usuario/readAll.php [L]
 
     # Insert URI's
 
     RewriteRule ^escolaInsert/?$ controllers/escola/insert.php [L]
+    RewriteRule ^notaInsert/?$ controllers/nota/insert.php [L]
     RewriteRule ^pessoaInsert/?$ controllers/pessoa/insert.php [L]
     RewriteRule ^usuarioInsert/?$ controllers/usuario/insert.php [L]
 
     # Edit URI's
 
     RewriteRule ^escolaEdit/([A-Za-z0-9]+)$ views/escolaEdit.php?2a0da8ad06a96827787ed16254376d10=$1 [L]
+    RewriteRule ^notaEdit/([A-Za-z0-9]+)$ views/notaEdit.php?e94d72b183558d0cd1c4cf263f235560=$1 [L]
     RewriteRule ^pessoaEdit/([A-Za-z0-9]+)$ views/pessoaEdit.php?5b9f3257ab6a7a150f20f7d4f228559b=$1 [L]
     RewriteRule ^usuarioEdit/([A-Za-z0-9]+)/([A-Za-z0-9]+)$ views/usuarioEdit.php?78eafd55d38a6cdcf6611ca998b01e44=$1&f8032d5cae3de20fcec887f395ec9a6a=$2 [L]
 
     # Update URI's
 
     RewriteRule ^escolaUpdate/?$ controllers/escola/update.php [L]
+    RewriteRule ^notaUpdate/?$ controllers/nota/update.php [L]
     RewriteRule ^pessoaUpdate/?$ controllers/pessoa/update.php [L]
     RewriteRule ^usuarioUpdate/?$ controllers/usuario/update.php [L]
 
     # Delete URI's
     
     RewriteRule ^escolaDelete/([A-Za-z0-9]+)$ controllers/escola/delete.php?2a0da8ad06a96827787ed16254376d10=$1 [L]
+    RewriteRule ^notaDelete/([A-Za-z0-9]+)$ controllers/nota/delete.php?e94d72b183558d0cd1c4cf263f235560=$1 [L]
     RewriteRule ^pessoaDelete/([A-Za-z0-9]+)$ controllers/pessoa/delete.php?5b9f3257ab6a7a150f20f7d4f228559b=$1 [L]
     RewriteRule ^usuarioDelete/([A-Za-z0-9]+)$ controllers/usuario/delete.php?78eafd55d38a6cdcf6611ca998b01e44=$1 [L]
 

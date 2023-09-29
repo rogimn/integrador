@@ -394,7 +394,7 @@ $prefix = '../';
                     }
                 });
 
-                // PULL DATA
+                // ROTINA QUE REALIZA A BUSCA DE TODOS OS REGISTROS
 
                 (async function pullData() {
                     await $.ajax({

@@ -17,8 +17,7 @@ $usuario = new Usuario($db);
 
 // set variables
 
-$py_idusuario = md5('idusuario');
-$usuario->idusuario = $_GET['' . $py_idusuario . ''];
+$usuario->idusuario = $_GET['' . $cfg['id']['usuario'] . ''];
 $usuario->monitor = 0;
 
 if ($usuario->delete()) {
@@ -35,4 +34,4 @@ if ($usuario->delete()) {
     die(var_dump($db->errorInfo()));
 }
 
-unset($cfg, $database, $db, $sql, $usuario, $py_idusuario);
+unset($cfg, $database, $db, $sql, $usuario);

@@ -67,4 +67,4 @@ if ($sql->rowCount() > 0) {
     echo json_encode($usuario_arr['usuario']);
 }
 
-unset($cfg, $database, $db, $data, $usuario, $usuario_arr, $usuario_item, $key, $len, $val, $row, $idusuario, $tipo, $nome, $senha, $email);
+unset($cfg, $database, $db, $usuario, $usuario_arr, $usuario_item, $sql, $row, $idusuario, $tipo, $nome, $usuario, $senha, $email);

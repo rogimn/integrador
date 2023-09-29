@@ -17,8 +17,7 @@ $pessoa = new Pessoa($db);
 
 // pré-definição de variáveis
 
-$py_idpessoa = md5('idpessoa');
-$pessoa->idpessoa = $_GET['' . $py_idpessoa . ''];
+$pessoa->idpessoa = $_GET['' . $cfg['id']['pessoa'] . ''];
 $pessoa->monitor = 0;
 
 // tenta realizar a operação e retorna
@@ -37,4 +36,4 @@ if ($pessoa->delete()) {
     die(var_dump($db->errorInfo()));
 }
 
-unset($cfg, $database, $db, $sql, $pessoa, $py_idpessoa);
+unset($cfg, $database, $db, $sql, $pessoa);

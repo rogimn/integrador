@@ -4,7 +4,7 @@
 
 require_once '../../config/app.php';
 require_once '../../models/Database.php';
-require_once '../../models/Escola.php';
+require_once '../../models/Nota.php';
 
 // abre a conexão com o banco
 
@@ -13,20 +13,20 @@ $db = $database->getConnection();
 
 // prepara o objeto
 
-$escola = new Escola($db);
+$nota = new Nota($db);
 
 // pré-definição de variáveis
 
-$escola->idescola = $_GET['' . $cfg['id']['escola'] . ''];
-$escola->monitor = 0;
+$nota->idnota = $_GET['' . $cfg['id']['nota'] . ''];
+$nota->monitor = 0;
 
 // tenta realizar a operação e retorna
 
-if ($escola->delete()) {
-    $sql = $escola->check();
+if ($nota->delete()) {
+    $sql = $nota->check();
 
     if ($sql->rowCount() == 0) {
-        $escola->truncate();
+        $nota->truncate();
         
         echo 'reload';
     } else {
@@ -36,4 +36,4 @@ if ($escola->delete()) {
     die(var_dump($db->errorInfo()));
 }
 
-unset($cfg, $database, $db, $sql, $escola);
+unset($cfg, $database, $db, $sql, $nota);

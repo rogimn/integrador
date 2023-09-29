@@ -65,4 +65,4 @@ if ($sql->rowCount() > 0) {
     echo json_encode($escola_arr['escola']);
 }
 
-unset($cfg, $database, $db, $data, $escola, $escola_arr, $escola_item, $key, $len, $val, $row, $idescola, $codigo, $nome, $logradouro, $numero, $bairro, $telefone, $celular, $email);
+unset($cfg, $database, $db, $escola, $escola_arr, $escola_item, $sql, $row, $idescola, $codigo, $nome, $logradouro, $numero, $bairro, $telefone, $celular, $email);

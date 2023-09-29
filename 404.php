@@ -1,11 +1,13 @@
 <?php
-    require_once 'config/app.php';
+require_once 'config/app.php';
 
+if (is_session_started() === TRUE) {
     if (empty($_SESSION['key'])) {
         header('location:./');
     }
+}
 
-    $menu = 0;
+$menu = 0;
 ?>
 
 <!DOCTYPE html>

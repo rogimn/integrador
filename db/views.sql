@@ -24,3 +24,11 @@ AS SELECT idescola, codigo, nome, cep, logradouro, numero, bairro, cidade, uf, c
 FROM escolas;
 
 --SELECT * FROM vw_escolas ORDER BY nome, bairro, email;
+
+/* View que lista todas as notas */
+
+CREATE VIEW vw_notas (
+    idnota, idusuario, codigo, texto, monitor, created_at
+)
+AS SELECT idnota, fk_usuarios_idusuario, codigo, texto, monitor, created_at
+FROM notas;

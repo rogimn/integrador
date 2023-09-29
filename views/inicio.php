@@ -2,7 +2,8 @@
 // chama os arquivos necessários
 
 require_once '../config/app.php';
-include_once '../models/Database.php';
+require_once '../models/Database.php';
+require_once '../models/Nota.php';
 
 // controle de sessão
 
@@ -68,9 +69,20 @@ $prefix = '../';
                 <!-- Content Header (Page header) -->
                 <section class="content-header">
                     <div class="container-fluid">
-                        <div class="row mb-2">
-                            <div class="col-sm-12">
-                                <h1></h1>
+                        <div class="row mb-1 mt-1">
+                            <div class="col-3">
+                                <h1><?= $cfg['header']['subtitle']['home']; ?></h1>
+                            </div>
+
+                            <div class="col-9">
+                                <div class="text-right">
+                                    <a href="#" class="btn btn-primary" title="Clique para cadastrar uma nova nota" data-toggle="modal" data-target="#modal-new-nota">
+                                        <i class="fas fa-sticky-note"></i>&nbsp;Nova nota
+                                    </a>
+                                    <a href="#" class="btn btn-primary" title="Clique para cadastrar um novo pedido" data-toggle="modal" data-target="#modal-new-pedido">
+                                        <i class="fas fa-file-invoice"></i>&nbsp;Novo pedido
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -80,16 +92,71 @@ $prefix = '../';
                 <!-- Main content -->
                 <section class="content">
 
-                    <div class="row">
+                    <div class="card card-note d-none">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                <i class="fas fa-sticky-note"></i>&nbsp;Notas
+                            </h3>
+
+                            <div class="card-tools">
+                                <!--<span title="3 New Messages" class="badge badge-primary">3</span>-->
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <dl class="dl-data"></dl>
+                        </div>
                     </div>
-                    <!-- /.row -->
                 </section>
                 <!-- /.content -->
             </div>
             <!-- /.content-wrapper -->
 
             <!-- Modals -->
-            
+            <div class="modal fade" id="modal-new-nota">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <form class="form-new-nota">
+                            <div class="modal-header">
+                                <h4 class="modal-title">
+                                    <span>Nova nota</span>
+                                </h4>
+
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <input type="hidden" name="rand" id="rand_note" value="<?= md5(mt_rand()); ?>">
+                                <input type="hidden" name="idusuario" id="idusuario" value="<?= $_SESSION['id']; ?>">
+                                <input type="hidden" name="codigo" id="codigo_note" value="<?= createCode(); ?>">
+                                
+                                <div class="form-group">
+                                    <label for="texto" class="d-none">Texto</label>
+                                    <textarea name="texto" id="texto" class="form-control" rows="5" title="Insira o conte&uacute;do da nota" placeholder="Texto"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer justify-content-between">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+                                <button type="submit" class="btn btn-primary btn-new-nota">Salvar</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
+            <div class="modal fade" id="modal-edit-nota">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content"></div>
+                </div>
+            </div>
             <!-- /.Modals -->
 
             <?php
@@ -129,12 +196,13 @@ $prefix = '../';
                         timer: 1000
                     });
 
-                /*// PULL DATA CLIENTE - CONTA - INVESTIMENTO
 
-                (async function pullData() {
+                // ROTINA QUE REALIZA A BUSCA DE TODOS OS REGISTROS
+
+                (async function pullDataNote() {
                     await $.ajax({
                         type: 'GET',
-                        url: 'controllers/cliente/readSingle.php',
+                        url: 'notaReadAll',
                         dataType: 'json',
                         cache: false,
                         beforeSend: function (result) {
@@ -156,157 +224,81 @@ $prefix = '../';
                             }
                         },
                         success: function (data) {
-                            if (data[0]) {
-                                $('.div-load-page').addClass('d-none');
-
-                                // o tempo de resgate e o rendimento serão passados para sessions
-                                // porque será utilizado no cálculo dos rendimentos na função pullDataMovimentacao()
-
-                                sessionStorage.setItem('rendimento', data[0].rendimento);
-                                sessionStorage.setItem('tempo_resgate', data[0].tempo_resgate);
-
-                                if (data[0].status == true) {
-                                    $('.data-name').html(data[0].nome);
-                                    $('.data-document').html(data[0].documento);
-                                    $('#idconta_deposito').val(data[0].idconta);
-                                    $('#idconta_resgate').val(data[0].idconta);
-                                    $('.data-account').html(data[0].conta);
-                                    $('.data-investiment').html(data[0].investimento);
-                                    $('.data-investiment-more').html(data[0].tempo_resgate + ' dias &#45; ' + data[0].rendimento + '%');
-                                } else {
-                                    $('.data-name').html('&#45;');
-                                    $('.data-document').html('&#45;');
-                                    $('.data-account').html('&#45;');
-                                    $('.data-investiment').html('&#45;');
-                                    $('.data-balance').html('&#45;');
-                                }
-                            }
-                        }
-                    });
-                })();
-
-                // PULL DATA MOVIMENTAÇÕES
-
-                (async function pullDataMovimentacao() {
-                    await $.ajax({
-                        type: 'GET',
-                        url: 'controllers/movimentacao/readAll.php',
-                        dataType: 'json',
-                        cache: false,
-                        beforeSend: function (result) {
-                            $('.div-load-page').removeClass('d-none').html('<p class="p-cog-spin lead text-center"><i class="fas fa-cog fa-spin"></i></p>');
-                        },
-                        error: function(result) {
-                            if (result.responseText) {
-                                Swal.fire({
-                                    icon: 'error',
-                                    html: result.responseText,
-                                    showConfirmButton: false
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    html: 'Verifique se o servidor est&aacute; operacional.',
-                                    showConfirmButton: false
-                                });
-                            }
-                        },
-                        success: function(data) {
                             if (data) {
-                                $('.div-load-page').addClass('d-none');
-                                
-                                if (data[0].status == false) {
-                                    $('.data-balance-deposit').html(new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format('0.00'));
-                                    $('.data-balance-profitable').html(new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format('0.00'));
-                                    $('.data-balance-total').html(new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format('0.00'));
-                                    $('#saldo_resgate').val('');
-                                    $('.table-data').addClass('d-none');
-                                    $('.dl-data').removeClass('d-none');
-                                } else {
-                                    let response = '',
-                                        dataAtual, dia, mes, $ano,
-                                        diffInMs, diffInDays,
-                                        saldo = 0,
-                                        rendimento = sessionStorage.getItem('rendimento'),
-                                        tempo_resgate = sessionStorage.getItem('tempo_resgate');
-
-                                    // obtendo a data atual no formato yyyy-mm-dd
-
-                                    dataAtual = new Date();
-                                    dia = String(dataAtual.getDate()).padStart(2, '0');
-                                    mes = String(dataAtual.getMonth() + 1).padStart(2, '0');
-                                    ano = dataAtual.getFullYear();
-                                    dataAtual = ano + '-' + mes + '-' + dia;
-                                    
-                                    // calculando a diferença de dias
-
-                                    diffInMs   = new Date(dataAtual) - new Date(data[0].datado_calculo)
-                                    diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+                                if (data[0].status == true) {
+                                    let response = '';
 
                                     for (let i in data) {
-                                        data[i].valor = Number(data[i].valor);
+                                        response += '<dt>'
+                                        + data[i].created_at
+                                        + '<span class="bg pl-3">'
+                                        + '<a class="fas fa-pen a-edit-nota text-warning" href="notaEdit/' + data[i].idnota + '" title="Editar a nota"></a>'
+                                        + '</span>'
 
-                                        if (data[i].tipo == 1) {
-                                            response += '<tr>'
-                                            + '<td><span class="badge badge-success">Entrada</span></td>'
-                                            + '<td>' + data[i].datado + '</td>'
-                                            + '<td>' + new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(data[i].valor) + '</td>'
-                                            + '</tr>';
+                                        <?php
+                                            // Apenas usuários administradores podem excluir a nota
 
-                                            saldo = saldo + data[i].valor;
-                                        } else if (data[i].tipo == 0) {
-                                            response += '<tr>'
-                                            + '<td><span class="badge badge-danger">Sa&iacute;da</span></td>'
-                                            + '<td>' + data[i].datado + '</td>'
-                                            + '<td>' + new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(data[i].valor) + '</td>'
-                                            + '</tr>';
+                                            if ($_SESSION['type'] == true) {
+                                        ?>
+                                        
+                                        + '<span class="bg">'
+                                        + '<a class="fas fa-trash a-delete-nota text-danger" id="<?= $cfg['id']['nota']; ?>-' + data[i].idnota + '" href="#" title="Excluir a nota"></a>'
+                                        + '</span>'
+                                        
+                                        <?php
+                                            }
+                                        ?>
 
-                                            saldo = saldo - data[i].valor;
-                                        }
+                                        + '</dt>'
+                                        + '<dd>' + data[i].texto + '</dd>';
                                     }
 
-                                    // calculando o rendimento
+                                    $('.div-load-page').addClass('d-none');
+                                    $('.card-note').removeClass('d-none');
+                                    $('.dl-data').html(response);
 
-                                    tempo_resgate = Number(tempo_resgate);
-                                    rendimento = Number(rendimento / 100);
+                                    // TOOLTIP LOCAL
 
-                                    calc1 = rendimento / tempo_resgate;
-                                    calc2 = calc1 * diffInDays;
-                                    calc3 = calc2 / 100;
-                                    rentabilizado = saldo * calc3;
-                                    total = saldo + rentabilizado;
-
-                                    $('.data-balance-deposit').html(new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(saldo));
-                                    $('.data-balance-profitable').html(new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(rentabilizado));
-                                    $('.data-balance-total').html(new Intl.NumberFormat('pt-BR', {style: 'currency', currency: 'BRL'}).format(total));
-                                    $('#saldo_resgate').val(total);
-                                    $('.dl-data').addClass('d-none');
-                                    $('.table-data tbody').html(response);                                    
+                                    $('div a, td span a, span a').tooltip({
+                                        boundary: 'window'
+                                    });
+                                } else {
+                                    $('.div-load-page').addClass('d-none');
+                                    $('.card-note').addClass('d-none');
+                                    //$('.blockquote-data').removeClass('d-none');
                                 }
                             }
                         },
                         complete: setTimeout(function () {
-                            pullDataMovimentacao();
+                            pullDataNote();
                         }, timeout),
                         timeout
                     });
                 })();
 
-                // NOVO PEDIDO
+                // MODAL
 
-                $('.form-deposit').submit(function (e) {
+                $('.dl-data').on('click', '.a-edit-nota', function (e) {
                     e.preventDefault();
 
-                    $.post('controllers/movimentacao/insert.php', $(this).serialize(), function (data) {
-                        $('.btn-deposit').html('<img src="dist/img/rings.svg" class="loader-svg">').fadeTo(fade, 1);
+                    $('#modal-edit-nota').modal('show').find('.modal-content').load($(this).attr('href'));
+                });
+
+                // NOVA NOTA
+
+                $('.form-new-nota').submit(function (e) {
+                    e.preventDefault();
+
+                    $.post('notaInsert', $(this).serialize(), function (data) {
+                        $('.btn-new-nota').html('<img src="dist/img/rings.svg" class="loader-svg">').fadeTo(fade, 1);
 
                         switch (data) {
                             case 'true':
                                 Toast.fire({
                                     icon: 'success',
-                                    title: 'Depósito realizado.'
+                                    title: 'Nota cadastrada.'
                                 }).then((result) => {
-                                    window.setTimeout("location.href='inicio.php'", delay);
+                                    window.setTimeout("location.href='inicio'", delay);
                                 });
                                 break;
 
@@ -318,52 +310,63 @@ $prefix = '../';
                                 break;
                         }
 
-                        $('.btn-deposit').html('Depositar').fadeTo(fade, 1);
+                        $('.btn-new-nota').html('Salvar').fadeTo(fade, 1);
                     });
 
                     return false;
                 });
 
-                // NOVO RESGATE
+                // DELETE NOTA
 
-                $('.form-redeem').submit(function (e) {
+                $('.dl-data').on('click', '.a-delete-nota', function (e) {
                     e.preventDefault();
-                    
-                    // se o valor do resgate for maior do que está investido, retorna um aviso.
 
-                    if (Number($('#valor_resgate').val()) > Number($('#saldo_resgate').val())) {
-                        Toast.fire({
-                            icon: 'error',
-                            title: 'O valor não pode exceder o limite.'
-                        });
-                    } else {
-                        $.post('controllers/movimentacao/insert.php', $(this).serialize(), function (data) {
-                            $('.btn-redeem').html('<img src="dist/img/rings.svg" class="loader-svg">').fadeTo(fade, 1);
+                    let click = this.id.split('-'),
+                        py = click[0],
+                        id = click[1];
 
-                            switch (data) {
-                                case 'true':
-                                    Toast.fire({
-                                        icon: 'success',
-                                        title: 'Resgate realizado.'
-                                    }).then((result) => {
-                                        window.setTimeout("location.href='inicio.php'", delay);
-                                    });
-                                    break;
-
-                                default:
-                                    Toast.fire({
+                    swalButton.fire({
+                        icon: 'question',
+                        title: 'Excluir a nota',
+                        showCancelButton: true,
+                        confirmButtonText: 'Sim',
+                        cancelButtonText: 'Não'
+                    }).then((result) => {
+                        if (result.value == true) {
+                            $.ajax({
+                                type: 'GET',
+                                //url: 'controllers/nota/delete.php?' + py + '=' + id,
+                                url: 'notaDelete/' + id,
+                                dataType: 'json',
+                                cache: false,
+                                error: function (result) {
+                                    Swal.fire({
                                         icon: 'error',
-                                        title: data
+                                        html: result.responseText,
+                                        showConfirmButton: false
                                     });
-                                    break;
-                            }
-
-                            $('.btn-redeem').html('Resgatar').fadeTo(fade, 1);
-                        });
-                    }
-
-                    return false;
-                });*/
+                                },
+                                success: function (data) {
+                                    if (data == true) {
+                                        Toast.fire({
+                                            icon: 'success',
+                                            title: 'Nota exclu&iacute;da.'
+                                        }).then((result) => {
+                                            window.setTimeout("location.href='inicio'", delay);
+                                        });
+                                    }/* else {
+                                        Toast.fire({
+                                            icon: 'success',
+                                            title: 'Nota desativada.'
+                                        }).then((result) => {
+                                            window.setTimeout("location.href='index'", delay);
+                                        });
+                                    }*/
+                                }
+                            });    
+                        }
+                    });
+                });
             });
         </script>
     </body>

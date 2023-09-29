@@ -10,7 +10,7 @@ header("Pragma: no-cache");
 // chama os arquivos necessários
 
 require_once '../config/app.php';
-include_once '../models/Database.php';
+require_once '../models/Database.php';
 require_once '../models/Usuario.php';
 
 // controle de sessão

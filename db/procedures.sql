@@ -104,3 +104,38 @@ BEGIN
 	UPDATE escolas SET monitor = a_monitor WHERE idescola = a_idescola;
 END;
 $$ LANGUAGE 'plpgsql';
+
+/* Procedure que insere uma nova nota */
+
+CREATE OR REPLACE PROCEDURE pd_nota_insert(
+	a_idusuario INTEGER,
+	a_codigo VARCHAR(20),
+    a_texto TEXT
+)
+AS $$
+BEGIN	
+	INSERT INTO notas (fk_usuarios_idusuario, codigo, texto)
+	VALUES (a_idusuario, a_codigo, a_texto);
+END;
+$$ LANGUAGE 'plpgsql';
+
+/* Procedure que atualiza uma nota */
+
+CREATE OR REPLACE PROCEDURE pd_nota_update(
+    a_texto TEXT,
+	a_idnota INTEGER
+)
+AS $$
+BEGIN	
+	UPDATE notas SET texto = a_texto WHERE idnota = a_idnota;
+END;
+$$ LANGUAGE 'plpgsql';
+
+/* Procedure que desativa uma escola */
+
+CREATE OR REPLACE PROCEDURE pd_nota_delete(a_monitor BOOLEAN, a_idnota INTEGER)
+AS $$
+BEGIN
+	UPDATE notas SET monitor = a_monitor WHERE idnota = a_idnota;
+END;
+$$ LANGUAGE 'plpgsql';
