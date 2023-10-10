@@ -12,15 +12,17 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <a href="usuario" class="nav-link" title="Gerenciar usu&aacute;rios" role="button" data-toggle="tooltip" data-original-title="Gerenciar usu&aacute;rios">
+            <a href="usuarios" class="nav-link" title="Gerenciar usu&aacute;rios" role="button" data-toggle="tooltip" data-original-title="Gerenciar usu&aacute;rios">
                 <mark>Hi <span><?= $_SESSION['name']; ?>!</span></mark>
             </a>
         </li>
+
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" title="Modo tela cheia" role="button" data-toggle="tooltip" data-original-title="Modo tela cheia">
                 <i class="fas fa-expand-arrows-alt"></i>
             </a>
         </li>
+        
         <li class="nav-item">
             <a class="nav-link a-logout-app" href="#" title="Sair do app" role="button" data-toggle="tooltip" data-original-title="Sair do app">
                 <i class="fas fa-sign-out-alt"></i>

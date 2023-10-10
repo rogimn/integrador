@@ -64,9 +64,8 @@ class Escola
 
     public function recordInsertExist()
     {
-        $sql = $this->conn->prepare("SELECT idescola FROM vw_escolas WHERE (codigo = :codigo OR nome = :nome OR email = :email)");
+        $sql = $this->conn->prepare("SELECT idescola FROM vw_escolas WHERE (codigo = :codigo OR email = :email)");
         $sql->bindParam(':codigo', $this->codigo, PDO::PARAM_STR);
-        $sql->bindParam(':nome', $this->nome, PDO::PARAM_STR);
         $sql->bindParam(':email', $this->email, PDO::PARAM_STR);
         $sql->execute();
 
@@ -107,9 +106,8 @@ class Escola
 
     public function recordUpdateExist()
     {
-        $sql = $this->conn->prepare("SELECT idescola FROM vw_escolas WHERE (codigo = :codigo OR nome = :nome OR email = :email) AND idescola <> :idescola");
+        $sql = $this->conn->prepare("SELECT idescola FROM vw_escolas WHERE (codigo = :codigo OR email = :email) AND idescola <> :idescola");
         $sql->bindParam(':codigo', $this->codigo, PDO::PARAM_STR);
-        $sql->bindParam(':nome', $this->nome, PDO::PARAM_STR);
         $sql->bindParam(':email', $this->email, PDO::PARAM_STR);
         $sql->bindParam(':idescola', $this->idescola, PDO::PARAM_INT);
         $sql->execute();

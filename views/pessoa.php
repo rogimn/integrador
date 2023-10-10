@@ -3,6 +3,8 @@
 // chama os arquivos necessários
 
 require_once '../config/app.php';
+require_once '../models/Database.php';
+require_once '../models/Escola.php';
 
 // controle de sessão
 
@@ -12,9 +14,18 @@ if (is_session_started() === TRUE) {
     }
 }
 
+// abre a conexão com o banco
+
+$database = new Database();
+$db = $database->getConnection();
+
+// prepara o objeto
+
+$escola = new Escola($db);
+
 //pré-definição de variáveis
 
-$menu = 2;
+$menu = 3;
 $prefix = '../';
 ?>
 
@@ -25,7 +36,7 @@ $prefix = '../';
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
         <title>
-            <?= $cfg['header']['title'] . $cfg['header']['subtitle']['school']; ?>
+            <?= $cfg['header']['title'] . $cfg['header']['subtitle']['person']; ?>
         </title>
 
         <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -40,6 +51,8 @@ $prefix = '../';
         <!-- DataTables -->
         <link rel="stylesheet" media="print" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" onload="this.media='all'">
         <link rel="stylesheet" media="print" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css" onload="this.media='all'">
+        <!-- Select Picker -->
+        <link rel="stylesheet" media="print" href="plugins/bootstrap-select-1.13.14/css/bootstrap-select.min.css" onload="this.media='all'">
         <!-- SweetAlert2 -->
         <link rel="stylesheet" media="print" href="plugins/sweetalert2/sweetalert2.min.css" onload="this.media='all'">
         <!-- Theme style -->
@@ -64,13 +77,13 @@ $prefix = '../';
                     <div class="container-fluid">
                         <div class="row mb-1 mt-1">
                             <div class="col-7">
-                                <h1><?= $cfg['header']['subtitle']['school']; ?></h1>
+                                <h1><?= $cfg['header']['subtitle']['person']; ?></h1>
                             </div>
 
                             <div class="col-5">
                                 <div class="text-right">
-                                    <a href="#" class="btn btn-primary" title="Clique para cadastrar uma nova escola" data-toggle="modal" data-target="#modal-new-escola">
-                                        <i class="fas fa-user"></i> Novo escola
+                                    <a href="#" class="btn btn-primary" title="Clique para cadastrar uma nova pessoa" data-toggle="modal" data-target="#modal-new-pessoa">
+                                        <i class="fas fa-user"></i> Nova pessoa
                                     </a>
                                 </div>
                             </div>
@@ -90,7 +103,8 @@ $prefix = '../';
                             <table class="table table-bordered table-hover table-data d-none">
                                 <thead>
                                     <tr>
-                                        <th>C&oacute;digo</th>
+                                        <th>Escola</th>
+                                        <th>Matr&iacute;cula</th>
                                         <th>Nome</th>
                                         <th>Bairro</th>
                                         <th>Endere&ccedil;o</th>
@@ -103,7 +117,8 @@ $prefix = '../';
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <th>C&oacute;digo</th>
+                                        <th>Escola</th>
+                                        <th>Matr&iacute;cula</th>
                                         <th>Nome</th>
                                         <th>Bairro</th>
                                         <th>Endere&ccedil;o</th>
@@ -118,8 +133,8 @@ $prefix = '../';
                                 <h5><?= $cfg['msg_empty_table']['title']; ?></h5>
                                 <p>
                                     <span><?= $cfg['msg_empty_table']['msg']; ?></span>
-                                    <a href="#" title="Clique para cadastrar um novo escola" data-toggle="modal" data-target="#modal-new-escola">
-                                        Novo escola
+                                    <a href="#" title="Clique para cadastrar uma nova pessoa" data-toggle="modal" data-target="#modal-new-pessoa">
+                                        Nova pessoa
                                     </a>
                                 </p>
                             </blockquote>
@@ -134,13 +149,13 @@ $prefix = '../';
             <!-- /.content-wrapper -->
 
             <!-- Modals -->
-            <div class="modal fade" id="modal-new-escola">
+            <div class="modal fade" id="modal-new-pessoa">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content">
-                        <form class="form-new-escola">
+                        <form class="form-new-pessoa">
                             <div class="modal-header">
                                 <h4 class="modal-title">
-                                    <span>Novo escola</span>
+                                    <span>Nova pessoa</span>
                                 </h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -148,16 +163,48 @@ $prefix = '../';
                             </div>
                             <div class="modal-body">
                                 <input type="hidden" name="rand" id="rand" value="<?= md5(mt_rand()); ?>">
-                                <input type="hidden" name="codigo" id="codigo" value="<?= createCode(); ?>">
-
+                                
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+                                        <div class="row form-group g-3 align-items-center">
+                                            <div class="col-3">
+                                                <label class="text text-danger" for="escola">Escola</label>
+                                            </div>
+                                            <div class="col-9">
+                                                <select name="escola" id="escola" class="selectpicker show-tick form-control" title="Selecione a escola" placeholder="Escola" data-live-search="true" data-width="" data-size="7" required>
+                                                <?php
+                                                    $escola->monitor = true;
+                                                    $sql = $escola->readAll();
+
+                                                    if ($sql->rowCount() > 0) {
+                                                        echo '<option value="" selected>Selecione a escola</option>';
+
+                                                        while($row = $sql->fetch(PDO::FETCH_OBJ)) {
+                                                            echo '<option title="'.$row->nome.'" data-subtext="'.$row->cep.', '.$row->numero.', '.$row->bairro.', '.$row->cidade.', '.$row->uf.'" value="'.$row->idescola.'">'.$row->nome.'</option>';
+                                                        }
+                                                    } else {
+                                                        echo '<option value="" selected>Nenhuma escola cadastrada</option>';
+                                                    }
+                                                ?>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-group g-3 align-items-center">
+                                            <div class="col-3">
+                                                <label class="text text-danger" for="matricula">Matr&iacute;cula</label>
+                                            </div>
+                                            <div class="col-9">
+                                                <input type="text" name="matricula" id="matricula" minlength="5" maxlength="20" class="form-control col-6" title="Informe o n&uacute;mero da matr&iacute;cula escolar" placeholder="Matr&iacute;cula" required>
+                                            </div>
+                                        </div>
+
                                         <div class="row form-group g-3 align-items-center">
                                             <div class="col-3">
                                                 <label class="text text-danger" for="nome">Nome</label>
                                             </div>
                                             <div class="col-9">
-                                                <input type="text" name="nome" id="nome" minlength="2" maxlength="200" class="form-control" title="Informe o nome do escola" placeholder="Nome" required>
+                                                <input type="text" name="nome" id="nome" minlength="2" maxlength="200" class="form-control" title="Informe o nome do pessoa" placeholder="Nome" required>
                                             </div>
                                         </div>
 
@@ -216,7 +263,6 @@ $prefix = '../';
                                                 <label class="text text-danger" for="uf">UF</label>
                                             </div>
                                             <div class="col-9">
-                                                <!--<select name="uf" id="uf" class="selectpicker show-tick form-control" title="Selecione a Unidade Federativa" placeholder="UF" data-width="" data-size="7">-->
                                                 <select name="uf" id="uf" class="form-control col-6" title="Selecione a Unidade Federativa" placeholder="UF" readonly>
                                                     <option value="" selected></option>
                                                     <option value="AC">AC</option>
@@ -290,7 +336,7 @@ $prefix = '../';
                             </div>
                             <div class="modal-footer justify-content-between">
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-                                <button type="submit" class="btn btn-primary btn-new-escola">Salvar</button>
+                                <button type="submit" class="btn btn-primary btn-new-pessoa">Salvar</button>
                             </div>
                         </form>
                     </div>
@@ -299,7 +345,7 @@ $prefix = '../';
                 <!-- /.modal-dialog -->
             </div>
 
-            <div class="modal fade" id="modal-edit-escola">
+            <div class="modal fade" id="modal-edit-pessoa">
                 <div class="modal-dialog modal-xl">
                     <div class="modal-content"></div>
                 </div>
@@ -321,6 +367,8 @@ $prefix = '../';
         <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
         <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
         <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <!-- Select Picker -->
+        <script src="plugins/bootstrap-select-1.13.14/js/bootstrap-select.min.js"></script>
         <!-- Input Mask -->
         <script src="plugins/inputmask/jquery.inputmask.min.js"></script>
         <!-- SweetAlert2 -->
@@ -397,7 +445,7 @@ $prefix = '../';
                 (async function pullData() {
                     await $.ajax({
                         type: 'GET',
-                        url: 'escolaReadAll',
+                        url: 'pessoaReadAll',
                         dataType: 'json',
                         cache: false,
                         beforeSend: function (result) {
@@ -427,15 +475,16 @@ $prefix = '../';
 
                                     for (let i in data) {
                                         response += '<tr>'
-                                        + '<td>' + data[i].codigo + '</td>'
+                                        + '<td>' + data[i].escola + '</td>'
+                                        + '<td>' + data[i].matricula + '</td>'
                                         + '<td>' + data[i].nome + '</td>'
                                         + '<td>' + data[i].bairro + '</td>'
                                         + '<td>' + data[i].logradouro + ', ' + data[i].numero + '</td>'
                                         + '<td>' + data[i].celular + ' &#45; ' + data[i].telefone + '</td>'
                                         + '<td>' + data[i].email + '</td>'
                                         + '<td class="td-action">'
-                                        + '<span class="bg bg-warning mr-2"><a class="fas fa-pen a-edit-escola" href="escolaEdit/' + data[i].idescola + '" title="Editar escola"></a></span>'
-                                        + '<span class="bg bg-danger"><a class="fas fa-trash a-delete-escola" id="<?= $cfg['id']['escola']; ?>-' + data[i].idescola + '" href="#" title="Excluir escola"></a></span>'
+                                        + '<span class="bg bg-warning mr-2"><a class="fas fa-pen a-edit-pessoa" href="pessoaEdit/' + data[i].idpessoa + '" title="Editar pessoa"></a></span>'
+                                        + '<span class="bg bg-danger"><a class="fas fa-trash a-delete-pessoa" id="<?= $cfg['id']['pessoa']; ?>-' + data[i].idpessoa + '" href="#" title="Excluir pessoa"></a></span>'
                                         + '</td></tr>';
                                     }
 
@@ -491,30 +540,30 @@ $prefix = '../';
                         timeout
                     });
                 })();
-
+                
                 // MODAL
 
-                $('.table-data').on('click', '.a-edit-escola', function (e) {
+                $('.table-data').on('click', '.a-edit-pessoa', function (e) {
                     e.preventDefault();
 
-                    $('#modal-edit-escola').modal('show').find('.modal-content').load($(this).attr('href'));
+                    $('#modal-edit-pessoa').modal('show').find('.modal-content').load($(this).attr('href'));
                 });
 
-                // NOVA ESCOLA
+                // NOVA PESSOA
 
-                $('.form-new-escola').submit(function (e) {
+                $('.form-new-pessoa').submit(function (e) {
                     e.preventDefault();
 
-                    $.post('escolaInsert', $(this).serialize(), function (data) {
-                        $('.btn-new-escola').html('<img src="dist/img/rings.svg" class="loader-svg">').fadeTo(fade, 1);
+                    $.post('pessoaInsert', $(this).serialize(), function (data) {
+                        $('.btn-new-pessoa').html('<img src="dist/img/rings.svg" class="loader-svg">').fadeTo(fade, 1);
 
                         switch (data) {
                             case 'true':
                                 Toast.fire({
                                     icon: 'success',
-                                    title: 'Escola cadastrada.'
+                                    title: 'Pessoa cadastrada.'
                                 }).then((result) => {
-                                    window.setTimeout("location.href='escolas'", delay);
+                                    window.setTimeout("location.href='pessoas'", delay);
                                 });
                                 break;
 
@@ -526,7 +575,7 @@ $prefix = '../';
                                 break;
                         }
 
-                        $('.btn-new-escola').html('Salvar').fadeTo(fade, 1);
+                        $('.btn-new-pessoa').html('Salvar').fadeTo(fade, 1);
                     });
 
                     return false;
@@ -534,7 +583,7 @@ $prefix = '../';
 
                 // DELETE ESCOLA
 
-                $('.table-data').on('click', '.a-delete-escola', function (e) {
+                $('.table-data').on('click', '.a-delete-pessoa', function (e) {
                     e.preventDefault();
 
                     let click = this.id.split('-'),
@@ -543,7 +592,7 @@ $prefix = '../';
 
                     swalButton.fire({
                         icon: 'question',
-                        title: 'Desativar a escola',
+                        title: 'Desativar a pessoa',
                         showCancelButton: true,
                         confirmButtonText: 'Sim',
                         cancelButtonText: 'Não'
@@ -551,8 +600,7 @@ $prefix = '../';
                         if (result.value == true) {
                             $.ajax({
                                 type: 'GET',
-                                //url: 'controllers/escola/delete.php?' + py + '=' + id,
-                                url: 'escolaDelete/' + id,
+                                url: 'pessoaDelete/' + id,
                                 dataType: 'json',
                                 cache: false,
                                 error: function (result) {
@@ -566,14 +614,14 @@ $prefix = '../';
                                     if (data == true) {
                                         Toast.fire({
                                             icon: 'success',
-                                            title: 'Escola desativada.'
+                                            title: 'Pessoa desativada.'
                                         }).then((result) => {
-                                            window.setTimeout("location.href='escolas'", delay);
+                                            window.setTimeout("location.href='pessoas'", delay);
                                         });
                                     }/* else {
                                         Toast.fire({
                                             icon: 'success',
-                                            title: 'Escola desativada.'
+                                            title: 'Pessoa desativada.'
                                         }).then((result) => {
                                             window.setTimeout("location.href='index'", delay);
                                         });
@@ -589,4 +637,4 @@ $prefix = '../';
 </html>
 
 <?php
-unset($cfg, $menu, $prefix);
+unset($cfg, $database, $db, $escola, $sql, $row, $menu, $prefix);

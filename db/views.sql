@@ -15,6 +15,15 @@ FROM usuarios;
 
 --SELECT * FROM vw_usuarios ORDER BY tipo ASC, nome, usuario, email;
 
+/* View que lista todas as notas */
+
+CREATE VIEW vw_notas (
+    idnota, idusuario, codigo, texto, monitor, created_at
+)
+AS SELECT nt.idnota, nt.fk_usuarios_idusuario AS idusuario, nt.codigo, nt.texto, nt.monitor, nt.created_at
+FROM notas nt
+INNER JOIN usuarios us ON us.idusuario = nt.fk_usuarios_idusuario;
+
 /* View que lista todas as escolas */
 
 CREATE VIEW vw_escolas (
@@ -25,10 +34,13 @@ FROM escolas;
 
 --SELECT * FROM vw_escolas ORDER BY nome, bairro, email;
 
-/* View que lista todas as notas */
+/* View que lista todas as pessoas */
 
-CREATE VIEW vw_notas (
-    idnota, idusuario, codigo, texto, monitor, created_at
+CREATE VIEW vw_pessoas (
+    idescola, escola, idpessoa, matricula, nome, cep, logradouro, numero, bairro, cidade, uf, celular, telefone, email, observacao, monitor
 )
-AS SELECT idnota, fk_usuarios_idusuario, codigo, texto, monitor, created_at
-FROM notas;
+AS SELECT es.idescola, es.nome AS escola, ps.idpessoa, ps.matricula, ps.nome, ps.cep, ps.logradouro, ps.numero, ps.bairro, ps.cidade, ps.uf, ps.celular, ps.telefone, ps.email, ps.observacao, ps.monitor
+FROM pessoas ps
+INNER JOIN escolas es ON es.idescola = ps.fk_escolas_idescola;
+
+--SELECT * FROM vw_pessoas WHERE idescola = 'idescola' ORDER BY es.nome, ps.nome, ps.matricula;

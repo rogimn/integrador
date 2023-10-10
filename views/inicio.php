@@ -79,8 +79,8 @@ $prefix = '../';
                                     <a href="#" class="btn btn-primary" title="Clique para cadastrar uma nova nota" data-toggle="modal" data-target="#modal-new-nota">
                                         <i class="fas fa-sticky-note"></i>&nbsp;Nova nota
                                     </a>
-                                    <a href="#" class="btn btn-primary" title="Clique para cadastrar um novo pedido" data-toggle="modal" data-target="#modal-new-pedido">
-                                        <i class="fas fa-file-invoice"></i>&nbsp;Novo pedido
+                                    <a href="#" class="btn btn-primary" title="Clique para registrar uma nova entrega" data-toggle="modal" data-target="#modal-new-entrega">
+                                        <i class="fas fa-file-invoice"></i>&nbsp;Nova entrega
                                     </a>
                                 </div>
                             </div>
@@ -197,7 +197,7 @@ $prefix = '../';
                     });
 
 
-                // ROTINA QUE REALIZA A BUSCA DE TODOS OS REGISTROS
+                // ROTINA QUE REALIZA A BUSCA DE TODAS AS NOTAS
 
                 (async function pullDataNote() {
                     await $.ajax({

@@ -27,14 +27,16 @@ $$ LANGUAGE 'plpgsql';
 
 /* Procedure que atualiza os dados do usuário */
 
-CREATE PROCEDURE pd_usuario_update(IN a_tipo boolean, IN a_nome character varying, IN a_usuario character varying, IN a_senha character varying, IN a_email character varying, IN a_idusuario integer)
-    LANGUAGE plpgsql
-    AS $$
+CREATE OR REPLACE PROCEDURE pd_usuario_update(IN a_tipo boolean, IN a_nome character varying, IN a_usuario character varying, IN a_senha character varying, IN a_email character varying, IN a_idusuario integer)
+AS $$
+DECLARE
+a_updated_at TIMESTAMP := clock_timestamp();
 BEGIN	
 	UPDATE usuarios SET 
-	tipo = a_tipo, nome = a_nome, usuario = a_usuario, senha = a_senha, email = a_email, updated_at = CURRENT_TIMESTAMP WHERE idusuario = a_idusuario;
+	tipo = a_tipo, nome = a_nome, usuario = a_usuario, senha = a_senha, email = a_email, updated_at = a_updated_at
+	WHERE idusuario = a_idusuario;
 END;
-$$;
+$$ LANGUAGE 'plpgsql';
 
 --CALL pd_usuario_update('1', 'Administrador', 'admin', 'admin', 'admin@acme.cc', 1);
 
@@ -42,8 +44,10 @@ $$;
 
 CREATE OR REPLACE PROCEDURE pd_usuario_delete(a_monitor BOOLEAN,a_idusuario INTEGER)
 AS $$
+DECLARE
+a_updated_at TIMESTAMP := clock_timestamp();
 BEGIN
-	UPDATE usuarios SET monitor = a_monitor WHERE idusuario = a_idusuario;
+	UPDATE usuarios SET monitor = a_monitor, updated_at = a_updated_at WHERE idusuario = a_idusuario;
 END;
 $$ LANGUAGE 'plpgsql';
 
@@ -91,8 +95,11 @@ CREATE OR REPLACE PROCEDURE pd_escola_update(
 	a_idescola INTEGER
 )
 AS $$
+DECLARE
+a_updated_at TIMESTAMP := clock_timestamp();
 BEGIN	
-	UPDATE escolas SET nome = a_nome, cep = a_cep, logradouro = a_logradouro, numero = a_numero, bairro = a_bairro, cidade = a_cidade, uf = a_uf, telefone = a_telefone, celular = a_celular, email = a_email, observacao = a_observacao WHERE idescola = a_idescola;
+	UPDATE escolas SET nome = a_nome, cep = a_cep, logradouro = a_logradouro, numero = a_numero, bairro = a_bairro, cidade = a_cidade, uf = a_uf, telefone = a_telefone, celular = a_celular, email = a_email, observacao = a_observacao, updated_at = a_updated_at
+	WHERE idescola = a_idescola;
 END;
 $$ LANGUAGE 'plpgsql';
 
@@ -100,8 +107,10 @@ $$ LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE PROCEDURE pd_escola_delete(a_monitor BOOLEAN, a_idescola INTEGER)
 AS $$
+DECLARE
+a_updated_at TIMESTAMP := clock_timestamp();
 BEGIN
-	UPDATE escolas SET monitor = a_monitor WHERE idescola = a_idescola;
+	UPDATE escolas SET monitor = a_monitor, updated_at = a_updated_at WHERE idescola = a_idescola;
 END;
 $$ LANGUAGE 'plpgsql';
 
@@ -126,8 +135,10 @@ CREATE OR REPLACE PROCEDURE pd_nota_update(
 	a_idnota INTEGER
 )
 AS $$
+DECLARE
+a_updated_at TIMESTAMP := clock_timestamp();
 BEGIN	
-	UPDATE notas SET texto = a_texto WHERE idnota = a_idnota;
+	UPDATE notas SET texto = a_texto, updated_at = a_updated_at WHERE idnota = a_idnota;
 END;
 $$ LANGUAGE 'plpgsql';
 
@@ -135,7 +146,72 @@ $$ LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE PROCEDURE pd_nota_delete(a_monitor BOOLEAN, a_idnota INTEGER)
 AS $$
+DECLARE
+a_updated_at TIMESTAMP := clock_timestamp();
 BEGIN
-	UPDATE notas SET monitor = a_monitor WHERE idnota = a_idnota;
+	UPDATE notas SET monitor = a_monitor, updated_at = a_updated_at WHERE idnota = a_idnota;
+END;
+$$ LANGUAGE 'plpgsql';
+
+/* Procedure que insere uma nova pessoa */
+
+CREATE OR REPLACE PROCEDURE pd_pessoa_insert(
+	a_idescola INTEGER,
+	a_matricula VARCHAR(20),
+    a_nome VARCHAR(200),
+	a_cep VARCHAR(8),
+	a_logradouro VARCHAR(200),
+	a_numero VARCHAR(10),
+	a_bairro VARCHAR(100),
+	a_cidade VARCHAR(100),
+	a_uf CHAR(2),
+	a_celular VARCHAR(11),
+	a_telefone VARCHAR(11),
+	a_email VARCHAR(100),
+	a_observacao TEXT
+)
+AS $$
+BEGIN	
+	INSERT INTO pessoas (fk_escolas_idescola, matricula, nome, cep, logradouro, numero, bairro, cidade, uf, telefone, celular, email, observacao)
+	VALUES (a_idescola, a_matricula, a_nome, a_cep, a_logradouro, a_numero, a_bairro, a_cidade, a_uf, a_telefone, a_celular, a_email, a_observacao);
+END;
+$$ LANGUAGE 'plpgsql';
+
+/* Procedure que atualiza uma pessoa */
+
+CREATE OR REPLACE PROCEDURE pd_pessoa_update(
+	a_idescola INTEGER,
+	a_matricula VARCHAR(20),
+    a_nome VARCHAR(200),
+	a_cep VARCHAR(8),
+	a_logradouro VARCHAR(200),
+	a_numero VARCHAR(10),
+	a_bairro VARCHAR(100),
+	a_cidade VARCHAR(100),
+	a_uf CHAR(2),
+	a_celular VARCHAR(11),
+	a_telefone VARCHAR(11),
+	a_email VARCHAR(100),
+	a_observacao TEXT,
+	a_idpessoa INTEGER
+)
+AS $$
+DECLARE
+a_updated_at TIMESTAMP := clock_timestamp();
+BEGIN	
+	UPDATE pessoas SET 
+	fk_escolas_idescola = a_idescola, matricula = a_matricula, nome = a_nome, cep = a_cep, logradouro = a_logradouro, numero = a_numero, bairro = a_bairro, cidade = a_cidade, uf = a_uf, telefone = a_telefone, celular = a_celular, email = a_email, observacao = a_observacao, updated_at = a_updated_at
+	WHERE idpessoa = a_idpessoa;
+END;
+$$ LANGUAGE 'plpgsql';
+
+/* Procedure que desativa uma pessoa */
+
+CREATE OR REPLACE PROCEDURE pd_pessoa_delete(a_monitor BOOLEAN, a_idpessoa INTEGER)
+AS $$
+DECLARE
+a_updated_at TIMESTAMP := clock_timestamp();
+BEGIN
+	UPDATE pessoas SET monitor = a_monitor, updated_at = a_updated_at WHERE idpessoa = a_idpessoa;
 END;
 $$ LANGUAGE 'plpgsql';
