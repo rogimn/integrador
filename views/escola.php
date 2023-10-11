@@ -187,7 +187,7 @@ $prefix = '../';
                                                 <label class="text text-danger" for="numero">N&uacute;mero</label>
                                             </div>
                                             <div class="col-9">
-                                                <input type="text" name="numero" id="numero" minlength="2" maxlength="10" class="form-control col-6" title="Informe o N&uacute;mero" placeholder="N&uacute;mero" required>
+                                                <input type="text" name="numero" id="numero" minlength="1" maxlength="10" class="form-control col-6" title="Informe o N&uacute;mero" placeholder="N&uacute;mero" required>
                                             </div>
                                         </div>
 

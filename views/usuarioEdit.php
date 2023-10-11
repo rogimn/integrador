@@ -163,7 +163,7 @@ if ($sql = $usuario->readSingle()) {
                         switch (data) {
                             case 'reload':
                                 Toast
-                                    .fire({ icon: 'success', title: 'Usu&aacute;rio editado.' })
+                                    .fire({ icon: 'success', title: 'Dados do usu&aacute;rio editado.' })
                                     .then((result) => {
                                         window.setTimeout("location.href='sair'", delay);
                                     });
@@ -171,7 +171,7 @@ if ($sql = $usuario->readSingle()) {
 
                             case 'true':
                                 Toast
-                                    .fire({ icon: 'success', title: 'Usu&aacute;rio editado.' })
+                                    .fire({ icon: 'success', title: 'Dados do usu&aacute;rio editado.' })
                                     .then((result) => {
                                         window.setTimeout("location.href='usuarios'", delay);
                                     });
