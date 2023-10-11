@@ -11,14 +11,10 @@
 
     ErrorDocument 404 '<h1>ARQUIVO N&Atilde;O ENCONTRADO!</h1><a href="./" title="Voltar">VOLTAR</a>'
     ErrorDocument 500 '<h1>OCORREU UM ERRO NO SERVIDOR!</h1><a href="./" title="Voltar">VOLTAR</a>'
-    #ErrorDocument 500 /ifc/integrador/500.php
-    #ErrorDocument 404 /ifc/integrador/404.php
 
     # General URI's
 
     RewriteRule ^login/?$ index.php [NC,L]
-    #RewriteRule ^404/?$ 404.php [NC,L]
-    #RewriteRule ^500/?$ 500.php [NC,L]
     RewriteRule ^instalacao/?$ appInstall.php [NC,L]
     #RewriteRule ^backup/?$ appBackup.php [NC,L]
     RewriteRule ^sair/?$ appLogout.php [NC,L]
