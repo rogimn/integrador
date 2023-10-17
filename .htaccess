@@ -39,6 +39,8 @@
 
     # Read URI's
 
+    ## mes/ano
+    RewriteRule ^entregaReadAll/([A-Za-z0-9]+)/([A-Za-z0-9]+)$ controllers/entrega/readAll.php?d2db8a610f8c7c0785d2d92a6e8c450e=$1&bde9dee6f523d6476dcca9cae8caa5f5=$2 [L]
     RewriteRule ^escolaReadAll/?$ controllers/escola/readAll.php [L]
     RewriteRule ^notaReadAll/?$ controllers/nota/readAll.php [L]
     RewriteRule ^pessoaReadAll/?$ controllers/pessoa/readAll.php [L]
@@ -46,6 +48,7 @@
 
     # Insert URI's
 
+    RewriteRule ^entregaInsert/?$ controllers/entrega/insert.php [L]
     RewriteRule ^escolaInsert/?$ controllers/escola/insert.php [L]
     RewriteRule ^notaInsert/?$ controllers/nota/insert.php [L]
     RewriteRule ^pessoaInsert/?$ controllers/pessoa/insert.php [L]
@@ -53,6 +56,7 @@
 
     # Edit URI's
 
+    RewriteRule ^entregaEdit/([A-Za-z0-9]+)$ views/entregaEdit.php?aaeb7cc9d48f6cb5588cc5cbbcd9ed10=$1 [L]
     RewriteRule ^escolaEdit/([A-Za-z0-9]+)$ views/escolaEdit.php?2a0da8ad06a96827787ed16254376d10=$1 [L]
     RewriteRule ^notaEdit/([A-Za-z0-9]+)$ views/notaEdit.php?e94d72b183558d0cd1c4cf263f235560=$1 [L]
     RewriteRule ^pessoaEdit/([A-Za-z0-9]+)$ views/pessoaEdit.php?5b9f3257ab6a7a150f20f7d4f228559b=$1 [L]
@@ -60,6 +64,7 @@
 
     # Update URI's
 
+    RewriteRule ^entregaUpdate/?$ controllers/entrega/update.php [L]
     RewriteRule ^escolaUpdate/?$ controllers/escola/update.php [L]
     RewriteRule ^notaUpdate/?$ controllers/nota/update.php [L]
     RewriteRule ^pessoaUpdate/?$ controllers/pessoa/update.php [L]
@@ -67,6 +72,7 @@
 
     # Delete URI's
     
+    RewriteRule ^entregaDelete/([A-Za-z0-9]+)$ controllers/entrega/delete.php?aaeb7cc9d48f6cb5588cc5cbbcd9ed10=$1 [L]
     RewriteRule ^escolaDelete/([A-Za-z0-9]+)$ controllers/escola/delete.php?2a0da8ad06a96827787ed16254376d10=$1 [L]
     RewriteRule ^notaDelete/([A-Za-z0-9]+)$ controllers/nota/delete.php?e94d72b183558d0cd1c4cf263f235560=$1 [L]
     RewriteRule ^pessoaDelete/([A-Za-z0-9]+)$ controllers/pessoa/delete.php?5b9f3257ab6a7a150f20f7d4f228559b=$1 [L]

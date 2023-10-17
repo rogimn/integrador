@@ -37,10 +37,21 @@ FROM escolas;
 /* View que lista todas as pessoas */
 
 CREATE VIEW vw_pessoas (
-    idescola, escola, idpessoa, matricula, nome, cep, logradouro, numero, bairro, cidade, uf, celular, telefone, email, observacao, monitor
+    idpessoa, idescola, escola, matricula, nome, cep, logradouro, numero, bairro, cidade, uf, celular, telefone, email, observacao, monitor
 )
-AS SELECT es.idescola, es.nome AS escola, ps.idpessoa, ps.matricula, ps.nome, ps.cep, ps.logradouro, ps.numero, ps.bairro, ps.cidade, ps.uf, ps.celular, ps.telefone, ps.email, ps.observacao, ps.monitor
+AS SELECT ps.idpessoa, es.idescola, es.nome AS escola, ps.matricula, ps.nome, ps.cep, ps.logradouro, ps.numero, ps.bairro, ps.cidade, ps.uf, ps.celular, ps.telefone, ps.email, ps.observacao, ps.monitor
 FROM pessoas ps
 INNER JOIN escolas es ON es.idescola = ps.fk_escolas_idescola;
 
 --SELECT * FROM vw_pessoas WHERE idescola = 'idescola' ORDER BY es.nome, ps.nome, ps.matricula;
+
+/* View que lista todas as entregas */
+
+CREATE VIEW vw_entregas (
+    identrega, idusuario, usuario, idpessoa, pessoa, matricula, idescola, escola, codigo, quantidade, monitor, created_at
+)
+AS SELECT en.identrega, us.idusuario, us.nome AS usuario, ps.idpessoa, ps.nome AS pessoa, ps.matricula, es.idescola, es.nome AS escola, en.codigo, en.quantidade, en.monitor, en.created_at
+FROM entregas en
+INNER JOIN usuarios us ON us.idusuario = en.fk_usuarios_idusuario
+INNER JOIN pessoas ps ON ps.idpessoa = en.fk_pessoas_idpessoa
+INNER JOIN escolas es ON ps.fk_escolas_idescola = es.idescola;

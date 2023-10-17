@@ -88,7 +88,7 @@ CREATE TABLE entregas (
     fk_usuarios_idusuario INTEGER NOT NULL,
     fk_pessoas_idpessoa INTEGER NOT NULL,
     codigo VARCHAR(10) UNIQUE NOT NULL,
-    datado DATE NOT NULL,
+    --datado DATE NOT NULL,
     quantidade INTEGER NOT NULL,
     monitor BOOLEAN NOT NULL DEFAULT TRUE,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

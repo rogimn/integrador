@@ -215,3 +215,49 @@ BEGIN
 	UPDATE pessoas SET monitor = a_monitor, updated_at = a_updated_at WHERE idpessoa = a_idpessoa;
 END;
 $$ LANGUAGE 'plpgsql';
+
+/* Procedure que insere uma nova entrega */
+
+CREATE OR REPLACE PROCEDURE pd_entrega_insert(
+	a_idusuario INTEGER,
+	a_idpessoa INTEGER,
+	a_codigo VARCHAR(10),
+    --a_datado DATE,
+	a_quantidade INTEGER
+)
+AS $$
+BEGIN	
+	INSERT INTO entregas (fk_usuarios_idusuario, fk_pessoas_idpessoa, codigo, /*datado,*/ quantidade)
+	VALUES (a_idusuario, a_idpessoa, a_codigo, /*a_datado,*/ a_quantidade);
+END;
+$$ LANGUAGE 'plpgsql';
+
+/* Procedure que atualiza uma entrega */
+
+CREATE OR REPLACE PROCEDURE pd_entrega_update(
+	a_idpessoa INTEGER,
+	a_codigo VARCHAR(10),
+    --a_datado DATE,
+	a_quantidade INTEGER,
+	a_identrega INTEGER
+)
+AS $$
+DECLARE
+a_updated_at TIMESTAMP := clock_timestamp();
+BEGIN	
+	UPDATE entregas SET
+	fk_pessoas_idpessoa = a_idpessoa, codigo = a_codigo, /*datado = a_datado,*/ quantidade = a_quantidade, updated_at = a_updated_at
+	WHERE identrega = a_identrega;
+END;
+$$ LANGUAGE 'plpgsql';
+
+/* Procedure que desativa uma entrega */
+
+CREATE OR REPLACE PROCEDURE pd_entrega_delete(a_monitor BOOLEAN, a_identrega INTEGER)
+AS $$
+DECLARE
+a_updated_at TIMESTAMP := clock_timestamp();
+BEGIN
+	UPDATE entregas SET monitor = a_monitor, updated_at = a_updated_at WHERE identrega = a_identrega;
+END;
+$$ LANGUAGE 'plpgsql';
