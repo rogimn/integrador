@@ -32,13 +32,48 @@ class Entrega
         return $this->conn->query("TRUNCATE TABLE entregas");
     }
 
+    // lê todos os registros
+
     public function readAll()
     {
-        $sql = $this->conn->prepare("SELECT identrega,idpessoa,matricula,idescola,escola,codigo,quantidade,created_at FROM vw_entregas WHERE monitor = :monitor AND CAST(created_at AS VARCHAR) LIKE :created_at ORDER BY created_at,pessoa,matricula");
+        $sql = $this->conn->prepare("SELECT identrega,idpessoa,pessoa,matricula,idescola,escola,codigo,quantidade,created_at FROM vw_entregas WHERE monitor = :monitor AND CAST(created_at AS VARCHAR) LIKE :created_at ORDER BY created_at,pessoa,matricula");
         $sql->bindParam(':created_at', $this->created_at, PDO::PARAM_STR);
         $sql->bindParam(':monitor', $this->monitor, PDO::PARAM_BOOL);
         $sql->execute();
 
         return $sql;
+    }
+
+    // verifica pelo mesmo registro antes de inserir
+
+    public function recordInsertExist()
+    {
+        $sql = $this->conn->prepare("SELECT identrega FROM vw_entregas WHERE codigo = :codigo");
+        $sql->bindParam(':codigo', $this->codigo, PDO::PARAM_STR);
+        $sql->execute();
+
+        if ($sql->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // insere um registro
+
+    public function insert()
+    {
+        if ($this->recordInsertExist()) {
+            die('Essa entrega j&aacute; j&aacute; foi registrada.');
+        } else {
+            $sql = $this->conn->prepare("CALL pd_entrega_insert(:idusuario, :idpessoa, :codigo, :quantidade)");
+            $sql->bindParam(':idusuario', $this->idusuario, PDO::PARAM_INT);
+            $sql->bindParam(':idpessoa', $this->idpessoa, PDO::PARAM_INT);
+            $sql->bindParam(':codigo', $this->codigo, PDO::PARAM_STR);
+            $sql->bindParam(':quantidade', $this->quantidade, PDO::PARAM_INT);
+            $sql->execute();
+
+            return $sql;
+        }
     }
 }

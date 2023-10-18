@@ -435,7 +435,19 @@ $prefix = '../';
                                         + '<td>' + data[i].email + '</td>'
                                         + '<td class="td-action">'
                                         + '<span class="bg bg-warning mr-2"><a class="fas fa-pen a-edit-escola" href="escolaEdit/' + data[i].idescola + '" title="Editar escola"></a></span>'
+                                        
+                                        <?php
+                                            // Apenas usuários administradores podem excluir o registro
+
+                                            if ($_SESSION['type'] == true) {
+                                        ?>
+                                        
                                         + '<span class="bg bg-danger"><a class="fas fa-trash a-delete-escola" id="<?= $cfg['id']['escola']; ?>-' + data[i].idescola + '" href="#" title="Excluir escola"></a></span>'
+                                        
+                                        <?php
+                                            }
+                                        ?>
+
                                         + '</td></tr>';
                                     }
 

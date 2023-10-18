@@ -484,7 +484,19 @@ $prefix = '../';
                                         + '<td>' + data[i].email + '</td>'
                                         + '<td class="td-action">'
                                         + '<span class="bg bg-warning mr-2"><a class="fas fa-pen a-edit-pessoa" href="pessoaEdit/' + data[i].idpessoa + '" title="Editar pessoa"></a></span>'
+                                        
+                                        <?php
+                                            // Apenas usuários administradores podem excluir o registro
+
+                                            if ($_SESSION['type'] == true) {
+                                        ?>
+
                                         + '<span class="bg bg-danger"><a class="fas fa-trash a-delete-pessoa" id="<?= $cfg['id']['pessoa']; ?>-' + data[i].idpessoa + '" href="#" title="Excluir pessoa"></a></span>'
+                                        
+                                        <?php
+                                            }
+                                        ?>
+
                                         + '</td></tr>';
                                     }
 

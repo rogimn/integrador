@@ -49,6 +49,18 @@ class Pessoa {
         return $sql;
     }
 
+    // lê todos os registros de uma escola
+
+    public function readAllBySchool()
+    {
+        $sql = $this->conn->prepare("SELECT * FROM vw_pessoas WHERE idescola = :idescola AND monitor = :monitor ORDER BY escola, nome, matricula, bairro, nome, cep, logradouro, numero");
+        $sql->bindParam(':idescola', $this->idescola, PDO::PARAM_INT);
+        $sql->bindParam(':monitor', $this->monitor, PDO::PARAM_BOOL);
+        $sql->execute();
+
+        return $sql;
+    }
+
     // lê um único registro
 
     public function readSingle()

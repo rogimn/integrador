@@ -46,7 +46,7 @@ if ($sql->rowCount() > 0) {
         $mes = substr($created_at, 5, 2);
         $dia = substr($created_at, 8, 2);
         $hora = substr($created_at, 11, 8);
-        $created_at = $dia . '/' . $mes . '/' . $ano . ' &#45; ' . $hora;
+        $created_at = $dia . '/' . $mes . '/' . $ano . ' &#45; ' . $hora . 'h';
 
         $entrega_item = array(
             'status' => true,

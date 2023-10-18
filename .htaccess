@@ -34,6 +34,7 @@
     # Components URI's
 
     RewriteRule ^loadCEP/?$ components/loadCEP.php [L]
+    RewriteRule ^loadPessoa/?$ components/loadPessoa.php [L]
     #RewriteRule ^loadCNPJ/?$ components/loadCNPJ.php [L]
     #RewriteRule ^loadCPF/?$ components/loadCPF.php [L]
 

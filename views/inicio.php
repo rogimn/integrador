@@ -54,6 +54,9 @@ $timestamp = new DateTime();
         <link rel="stylesheet" media="print" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" onload="this.media='all'">
         <!-- Font Awesome -->
         <link rel="stylesheet" media="print" href="plugins/fontawesome-free/css/all.min.css" onload="this.media='all'">
+        <!-- DataTables -->
+        <link rel="stylesheet" media="print" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" onload="this.media='all'">
+        <link rel="stylesheet" media="print" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css" onload="this.media='all'">
         <!-- SweetAlert2 -->
         <link rel="stylesheet" media="print" href="plugins/sweetalert2/sweetalert2.min.css" onload="this.media='all'">
         <!-- DatePicker -->
@@ -284,6 +287,17 @@ $timestamp = new DateTime();
                                 
                                 <div class="row form-group g-3 align-items-center">
                                     <div class="col-3">
+                                        <label class="text" for="conta">Data e Hora:</label>
+                                    </div>
+                                    <div class="col-9">
+                                        <code><?= date('d/m/Y H:m:s') . 'h'; ?></code>
+                                    </div>
+                                </div>
+                                
+                                <hr>
+
+                                <div class="row form-group g-3 align-items-center">
+                                    <div class="col-3">
                                         <label class="text text-danger" for="escola">Escola</label>
                                     </div>
                                     <div class="col-9">
@@ -311,8 +325,8 @@ $timestamp = new DateTime();
                                         <label class="text text-danger" for="pessoa">Pessoa</label>
                                     </div>
                                     <div class="col-9">
-                                        <select name="pessoa" id="pessoa" class="selectpicker show-tick form-control" title="Selecione a pessoa" placeholder="Pessoa" data-live-search="true" data-width="" data-size="7" readonly>
-                                        
+                                        <select name="pessoa" id="pessoa" class="selectpicker show-tick form-control" title="Selecione a pessoa" placeholder="Pessoa" data-live-search="true" data-width="" data-size="7" required>
+                                            <!--<option value="" selected>Selecione a pessoa</option>-->
                                         </select>
                                     </div>
                                 </div>
@@ -360,6 +374,11 @@ $timestamp = new DateTime();
         <script src="plugins/jquery/jquery.min.js"></script>
         <!-- Bootstrap 4 -->
         <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <!-- DataTables -->
+        <script src="plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+        <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
         <!-- SweetAlert2 -->
         <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
         <!-- DatePicker -->
@@ -405,13 +424,50 @@ $timestamp = new DateTime();
                     });
                 });
 
+                // AUTO CARREGA O SELECTBOX DE PESSOAS BASEADO NA ESCOLA DA ESCOLA
+
+                $('#escola').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+                    //$('#pessoa').find('option').not(':first').remove();
+
+                    $.ajax({
+                        type: 'POST',
+                        url: 'loadPessoa',
+                        dataType: 'JSON',
+                        data: {'<?= $cfg['id']['escola']; ?>': $('#escola').val()},
+                        cache: false,
+                        beforeSend: rs => {
+                            $('.div-load-page').removeClass('d-none').html('<p class="p-cog-spin lead text-center"><i class="fas fa-cog fa-spin"></i></p>');
+                        },
+                        error: rs => {
+                            //
+                        },
+                        success: rs => {
+                            if (rs) {
+                                if (rs[0].status == true) {
+                                    for (let i in rs) {
+                                        //$('#pessoa').append('<option title="' + rs[i]['nome'] + '" data-subtext="Matr&iacute;cula: ' + rs[i]['matricula'] + ' | ' + rs[i]['cep'] + ', ' + rs[i]['bairro'] + ', ' + rs[i]['cidade'] + ', ' + rs[i]['uf'] + ' | ' + rs[i]['celular'] + '"  value="' + rs[i]['idpessoa'] + '">' + rs[i]['nome'] + '</option>');
+                                        $('#pessoa').html('<option title="' + rs[i]['nome'] + '" data-subtext="Matr&iacute;cula: ' + rs[i]['matricula'] + ' | ' + rs[i]['cep'] + ', ' + rs[i]['bairro'] + ', ' + rs[i]['cidade'] + ', ' + rs[i]['uf'] + ' | ' + rs[i]['celular'] + '"  value="' + rs[i]['idpessoa'] + '">' + rs[i]['nome'] + '</option>');
+                                    }
+                                } else {
+                                    $('#pessoa').html('<option value="" selected>Nenhuma pessoa encontrada</option>');
+                                    
+                                }
+                            }
+                        },
+                        complete: rs => {
+                            $('.div-load-page').addClass('d-none');
+                            $('#pessoa').selectpicker('refresh');
+                        }
+                    });
+                });
+
                 // ROTINA QUE REALIZA A BUSCA DE TODAS AS NOTAS
 
                 (async function pullDataNote() {
                     await $.ajax({
                         type: 'GET',
                         url: 'notaReadAll',
-                        dataType: 'json',
+                        dataType: 'JSON',
                         cache: false,
                         beforeSend: function (result) {
                             $('.div-load-page').removeClass('d-none').html('<p class="p-cog-spin lead text-center"><i class="fas fa-cog fa-spin"></i></p>');
@@ -551,7 +607,7 @@ $timestamp = new DateTime();
                                 type: 'GET',
                                 //url: 'controllers/nota/delete.php?' + py + '=' + id,
                                 url: 'notaDelete/' + id,
-                                dataType: 'json',
+                                dataType: 'JSON',
                                 cache: false,
                                 error: function (result) {
                                     Swal.fire({
@@ -588,7 +644,7 @@ $timestamp = new DateTime();
                     await $.ajax({
                         type: 'GET',
                         url: 'entregaReadAll/<?= $mes . '/' . $ano; ?>',
-                        dataType: 'json',
+                        dataType: 'JSON',
                         cache: false,
                         beforeSend: function (result) {
                             $('.div-load-page').removeClass('d-none').html('<p class="p-cog-spin lead text-center"><i class="fas fa-cog fa-spin"></i></p>');
@@ -614,7 +670,29 @@ $timestamp = new DateTime();
                                     let response = '';
 
                                     for (let i in data) {
+                                        response += '<tr>'
+                                        + '<td>' + data[i].escola + '</td>'
+                                        + '<td>' + data[i].pessoa + '</td>'
+                                        + '<td>' + data[i].matricula + '</td>'
+                                        + '<td>' + data[i].codigo + '</td>'
+                                        + '<td>' + data[i].quantidade + '</td>'
+                                        + '<td>' + data[i].created_at + '</td>'
+                                        + '<td class="td-action">'
+                                        + '<span class="bg bg-warning mr-2"><a class="fas fa-pen a-edit-entrega" href="entregaEdit/' + data[i].identrega + '" title="Editar entrega"></a></span>'
                                         
+                                        <?php
+                                            // Apenas usuários administradores podem excluir o registro
+
+                                            if ($_SESSION['type'] == true) {
+                                        ?>
+
+                                        + '<span class="bg bg-danger"><a class="fas fa-trash a-delete-entrega" id="<?= $cfg['id']['entrega']; ?>-' + data[i].identrega + '" href="#" title="Excluir entrega"></a></span>'
+                                        
+                                        <?php
+                                            }
+                                        ?>
+
+                                        + '</td></tr>';
                                     }
 
                                     $('.div-load-page').addClass('d-none');
@@ -723,7 +801,7 @@ $timestamp = new DateTime();
                                 type: 'GET',
                                 //url: 'controllers/nota/delete.php?' + py + '=' + id,
                                 url: 'entregaDelete/' + id,
-                                dataType: 'json',
+                                dataType: 'JSON',
                                 cache: false,
                                 error: function (result) {
                                     Swal.fire({
