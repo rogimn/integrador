@@ -25,7 +25,9 @@ if ($usuario->delete()) {
 
     if ($sql->rowCount() == 0) {
         $usuario->truncate();
+
         rename('appInstallDone.php', 'appInstall.php');
+        
         echo 'reload';
     } else {
         echo 'true';

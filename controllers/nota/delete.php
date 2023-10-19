@@ -28,7 +28,7 @@ if ($nota->delete()) {
     if ($sql->rowCount() == 0) {
         $nota->truncate();
         
-        echo 'reload';
+        echo 'true';
     } else {
         echo 'true';
     }

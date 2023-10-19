@@ -28,7 +28,7 @@ if ($pessoa->delete()) {
     if ($sql->rowCount() == 0) {
         $pessoa->truncate();
         
-        echo 'reload';
+        echo 'true';
     } else {
         echo 'true';
     }

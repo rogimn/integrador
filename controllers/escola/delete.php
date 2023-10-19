@@ -28,7 +28,7 @@ if ($escola->delete()) {
     if ($sql->rowCount() == 0) {
         $escola->truncate();
         
-        echo 'reload';
+        echo 'true';
     } else {
         echo 'true';
     }

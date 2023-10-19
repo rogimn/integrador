@@ -44,6 +44,17 @@ class Entrega
         return $sql;
     }
 
+    // lê um único registro
+
+    public function readSingle()
+    {
+        $sql = $this->conn->prepare("SELECT * FROM vw_entregas WHERE identrega = :identrega");
+        $sql->bindParam(':identrega', $this->identrega, PDO::PARAM_INT);
+        $sql->execute();
+
+        return $sql;
+    }
+
     // verifica pelo mesmo registro antes de inserir
 
     public function recordInsertExist()
@@ -75,5 +86,50 @@ class Entrega
 
             return $sql;
         }
+    }
+
+    /*// verifica pelo mesmo registro antes de atualizar
+
+    public function recordUpdateExist()
+    {
+        $sql = $this->conn->prepare("SELECT identrega FROM vw_entregas WHERE codigo = :codigo AND idpessoa <> :idpessoa");
+        $sql->bindParam(':codigo', $this->codigo, PDO::PARAM_STR);
+        $sql->bindParam(':idpessoa', $this->idpessoa, PDO::PARAM_INT);
+        $sql->execute();
+
+        if ($sql->rowCount() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }*/
+
+    // insere um registro
+
+    public function update()
+    {
+        /*if ($this->recordUpdateExist()) {
+            die('Essa entrega j&aacute; j&aacute; foi registrada.');
+        } else {*/
+            $sql = $this->conn->prepare("CALL pd_entrega_update(:idpessoa, :quantidade, :identrega)");
+            $sql->bindParam(':idpessoa', $this->idpessoa, PDO::PARAM_INT);
+            $sql->bindParam(':quantidade', $this->quantidade, PDO::PARAM_INT);
+            $sql->bindParam(':identrega', $this->identrega, PDO::PARAM_INT);
+            $sql->execute();
+
+            return $sql;
+        #}
+    }
+
+    // inativa o registro
+
+    public function delete()
+    {
+        $sql = $this->conn->prepare("CALL pd_entrega_delete(:monitor, :identrega)");
+        $sql->bindParam(':monitor', $this->monitor, PDO::PARAM_BOOL);
+        $sql->bindParam(':identrega', $this->identrega, PDO::PARAM_INT);
+        $sql->execute();
+
+        return $sql;
     }
 }

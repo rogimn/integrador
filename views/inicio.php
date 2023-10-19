@@ -7,6 +7,10 @@ require_once '../models/Entrega.php';
 require_once '../models/Escola.php';
 require_once '../models/Nota.php';
 
+// carrega o componente que gerencia a barra da linha do tempo
+
+include_once '../components/loadTimeLine.php';
+
 // controle de sessão
 
 if (is_session_started() === TRUE) {
@@ -23,10 +27,6 @@ $db = $database->getConnection();
 // inicializando os objetos
 
 $escola = new Escola($db);
-
-// carrega o componente que gerencia a barra da linha do tempo
-
-include_once '../components/loadTimeLine.php';
 
 //pré-definição de variáveis
 
@@ -358,7 +358,7 @@ $timestamp = new DateTime();
             </div>
 
             <div class="modal fade" id="modal-edit-entrega">
-                <div class="modal-dialog modal-sm">
+                <div class="modal-dialog">
                     <div class="modal-content"></div>
                 </div>
             </div>
