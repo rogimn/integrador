@@ -444,10 +444,15 @@ $timestamp = new DateTime();
                         success: rs => {
                             if (rs) {
                                 if (rs[0].status == true) {
+                                    let response = '';
+
                                     for (let i in rs) {
+                                        response += '<option title="' + rs[i]['nome'] + '" data-subtext="Matr&iacute;cula: ' + rs[i]['matricula'] + ' | ' + rs[i]['cep'] + ', ' + rs[i]['bairro'] + ', ' + rs[i]['cidade'] + ', ' + rs[i]['uf'] + ' | ' + rs[i]['celular'] + '"  value="' + rs[i]['idpessoa'] + '">' + rs[i]['nome'] + '</option>';
                                         //$('#pessoa').append('<option title="' + rs[i]['nome'] + '" data-subtext="Matr&iacute;cula: ' + rs[i]['matricula'] + ' | ' + rs[i]['cep'] + ', ' + rs[i]['bairro'] + ', ' + rs[i]['cidade'] + ', ' + rs[i]['uf'] + ' | ' + rs[i]['celular'] + '"  value="' + rs[i]['idpessoa'] + '">' + rs[i]['nome'] + '</option>');
-                                        $('#pessoa').html('<option title="' + rs[i]['nome'] + '" data-subtext="Matr&iacute;cula: ' + rs[i]['matricula'] + ' | ' + rs[i]['cep'] + ', ' + rs[i]['bairro'] + ', ' + rs[i]['cidade'] + ', ' + rs[i]['uf'] + ' | ' + rs[i]['celular'] + '"  value="' + rs[i]['idpessoa'] + '">' + rs[i]['nome'] + '</option>');
+                                        //$('#pessoa').html('<option title="' + rs[i]['nome'] + '" data-subtext="Matr&iacute;cula: ' + rs[i]['matricula'] + ' | ' + rs[i]['cep'] + ', ' + rs[i]['bairro'] + ', ' + rs[i]['cidade'] + ', ' + rs[i]['uf'] + ' | ' + rs[i]['celular'] + '"  value="' + rs[i]['idpessoa'] + '">' + rs[i]['nome'] + '</option>');
                                     }
+
+                                    $('#pessoa').html(response);
                                 } else {
                                     $('#pessoa').html('<option value="" selected>Nenhuma pessoa encontrada</option>');
                                     

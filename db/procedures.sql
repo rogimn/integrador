@@ -236,7 +236,7 @@ $$ LANGUAGE 'plpgsql';
 
 CREATE OR REPLACE PROCEDURE pd_entrega_update(
 	a_idpessoa INTEGER,
-	a_codigo VARCHAR(10),
+	--a_codigo VARCHAR(10),
     --a_datado DATE,
 	a_quantidade INTEGER,
 	a_identrega INTEGER
@@ -246,7 +246,7 @@ DECLARE
 a_updated_at TIMESTAMP := clock_timestamp();
 BEGIN	
 	UPDATE entregas SET
-	fk_pessoas_idpessoa = a_idpessoa, codigo = a_codigo, /*datado = a_datado,*/ quantidade = a_quantidade, updated_at = a_updated_at
+	fk_pessoas_idpessoa = a_idpessoa, /*codigo = a_codigo, datado = a_datado,*/ quantidade = a_quantidade, updated_at = a_updated_at
 	WHERE identrega = a_identrega;
 END;
 $$ LANGUAGE 'plpgsql';

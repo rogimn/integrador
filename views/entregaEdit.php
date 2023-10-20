@@ -13,7 +13,7 @@ require_once '../config/app.php';
 require_once '../models/Database.php';
 require_once '../models/Entrega.php';
 require_once '../models/Escola.php';
-
+require_once '../models/Pessoa.php';
 
 // controle de sessão
 
@@ -32,11 +32,12 @@ $db = $database->getConnection();
 
 $entrega = new Entrega($db);
 $escola = new Escola($db);
+$pessoa = new Pessoa($db);
 
 // Variáveis de controle
 
-$escola->monitor = true;
 $entrega->identrega = $_GET['' . $cfg['id']['entrega'] . ''];
+$escola->monitor = true;
 
 // executa a consulta e retorna
 
@@ -113,7 +114,23 @@ if ($sql = $entrega->readSingle()) {
                     </div>
                     <div class="col-9">
                         <select name="pessoa" id="pessoa_edit" class="selectpicker show-tick form-control" title="Selecione a pessoa" placeholder="Pessoa" data-live-search="true" data-width="" data-size="7" required>
-                            <!--<option value="" selected>Selecione a pessoa</option>-->
+                        <?php
+                            $pessoa->idescola = $row->idescola;
+                            $pessoa->monitor = true;
+                            $sql3 = $pessoa->readAllBySchool();
+
+                            if ($sql3->rowCount() > 0) {
+                                while($row3 = $sql3->fetch(PDO::FETCH_OBJ)) {
+                                    if ($row->idpessoa == $row3->idpessoa) {
+                                        echo '<option title="' . $row3->nome . '" data-subtext="Matr&iacute;cula: ' . $row3->matricula . ' | ' . $row3->cep . ', ' . $row3->bairro . ', ' . $row3->cidade . ', ' . $row3->uf . ' | ' . $row3->celular . '"  value="' . $row3->idpessoa . '" selected>' . $row3->nome . '</option>';
+                                    } else {
+                                        echo '<option title="' . $row3->nome . '" data-subtext="Matr&iacute;cula: ' . $row3->matricula . ' | ' . $row3->cep . ', ' . $row3->bairro . ', ' . $row3->cidade . ', ' . $row3->uf . ' | ' . $row3->celular . '"  value="' . $row3->idpessoa . '">' . $row3->nome . '</option>';
+                                    }
+                                }
+                            } else {
+                                echo '<option value="" selected>Nenhuma escola cadastrada</option>';
+                            }
+                        ?>
                         </select>
                     </div>
                 </div>
@@ -158,8 +175,6 @@ if ($sql = $entrega->readSingle()) {
                 // AUTO CARREGA O SELECTBOX DE PESSOAS BASEADO NA ESCOLA DA ESCOLA
 
                 $('#escola_edit').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
-                    //$('#pessoa').find('option').not(':first').remove();
-
                     $.ajax({
                         type: 'POST',
                         url: 'loadPessoa',
@@ -175,13 +190,15 @@ if ($sql = $entrega->readSingle()) {
                         success: rs => {
                             if (rs) {
                                 if (rs[0].status == true) {
+                                    let response = '';
+
                                     for (let i in rs) {
-                                        //$('#pessoa_edit').append('<option title="' + rs[i]['nome'] + '" data-subtext="Matr&iacute;cula: ' + rs[i]['matricula'] + ' | ' + rs[i]['cep'] + ', ' + rs[i]['bairro'] + ', ' + rs[i]['cidade'] + ', ' + rs[i]['uf'] + ' | ' + rs[i]['celular'] + '"  value="' + rs[i]['idpessoa'] + '">' + rs[i]['nome'] + '</option>');
-                                        $('#pessoa_edit').html('<option title="' + rs[i]['nome'] + '" data-subtext="Matr&iacute;cula: ' + rs[i]['matricula'] + ' | ' + rs[i]['cep'] + ', ' + rs[i]['bairro'] + ', ' + rs[i]['cidade'] + ', ' + rs[i]['uf'] + ' | ' + rs[i]['celular'] + '"  value="' + rs[i]['idpessoa'] + '">' + rs[i]['nome'] + '</option>');
+                                        response += '<option title="' + rs[i]['nome'] + '" data-subtext="Matr&iacute;cula: ' + rs[i]['matricula'] + ' | ' + rs[i]['cep'] + ', ' + rs[i]['bairro'] + ', ' + rs[i]['cidade'] + ', ' + rs[i]['uf'] + ' | ' + rs[i]['celular'] + '"  value="' + rs[i]['idpessoa'] + '">' + rs[i]['nome'] + '</option>';
                                     }
+
+                                    $('#pessoa_edit').html(response);
                                 } else {
                                     $('#pessoa_edit').html('<option value="" selected>Nenhuma pessoa encontrada</option>');
-                                    
                                 }
                             }
                         },
@@ -206,7 +223,7 @@ if ($sql = $entrega->readSingle()) {
                                     icon: 'success',
                                     title: 'Dados da entrega editados.'
                                 }).then((result) => {
-                                    window.setTimeout("location.href='entregas'", delay);
+                                    window.setTimeout("location.href='inicio'", delay);
                                 });
                                 break;
 
@@ -238,4 +255,4 @@ if ($sql = $entrega->readSingle()) {
     die(var_dump($db->errorInfo()));
 }
 
-unset($cfg, $database, $db, $escola, $entrega, $sql, $row, $sql2, $row2);
+unset($cfg, $database, $db, $entrega, $escola, $pessoa, $sql, $row, $sql2, $row2, $sql3, $row3);

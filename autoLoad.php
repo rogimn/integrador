@@ -1,5 +1,5 @@
 <?php
-spl_autoload_register(
+/*spl_autoload_register(
     function (string $className) {
         #echo $className . '<br>';
         $fullPath = str_replace('Rogim\\Integrador', '.', $className);
@@ -13,4 +13,4 @@ spl_autoload_register(
             require_once $filePath;
         }
     }
-);
+);*/

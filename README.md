@@ -2,11 +2,14 @@
 
 ### Plataforma para gerenciar a distribuição de absorventes em escolas públicas
 
-#### Foi desenvolvido com as tecnologias:
+#### Foi desenvolvido com o uso das tecnologias:
 
-- Apache v 2.4;
-- PHP v 7.4;
-- PostgreSQL v 14;
+- MacOS Bir Sur;
+- Homebrew 4.1.16;
+- Apache v2.4;
+- PHP v7.4;
+- PostgreSQL v14;
+- AdminLTE v3.2.0;
 
 #### Passos:
 
@@ -15,5 +18,6 @@
 3. O arquivo "config/app.php" contém configurações gerais e podem ser modificadas ao seu gosto;
 4. Renomeie o arquivo "appInstallDone.php" para "appInstall.php";
 5. O arquivo ".htaccess" têm as primeiras 3 linhas comentadas, talvez seja necessários descomentá-las devido a mudança do ambiente;
+ 
 
 > That's All Folks! =)
