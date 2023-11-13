@@ -50,6 +50,8 @@ $prefix = '../';
         <link rel="stylesheet" media="print" href="plugins/fontawesome-free/css/all.min.css" onload="this.media='all'">
         <!-- DataTables -->
         <link rel="stylesheet" media="print" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" onload="this.media='all'">
+        <link rel="stylesheet" media="print" href="plugins/datatables-buttons/css/buttons.dataTables.min.css" onload="this.media='all'">
+        <link rel="stylesheet" media="print" href="plugins/datatables-select/css/select.bootstrap4.min.css" onload="this.media='all'">
         <link rel="stylesheet" media="print" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css" onload="this.media='all'">
         <!-- Select Picker -->
         <link rel="stylesheet" media="print" href="plugins/bootstrap-select-1.13.14/css/bootstrap-select.min.css" onload="this.media='all'">
@@ -365,8 +367,16 @@ $prefix = '../';
         <!-- DataTables -->
         <script src="plugins/datatables/jquery.dataTables.min.js"></script>
         <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+        <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+        <script src="plugins/datatables-select/js/dataTables.select.min.js"></script>
         <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
         <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <!-- DataTables Extensions -->
+        <script src="plugins/datatables-buttons/js/jszip.min.js"></script>
+        <script src="plugins/datatables-buttons/js/pdfmake.min.js"></script>
+        <script src="plugins/datatables-buttons/js/vfs_fonts.js"></script>
         <!-- Select Picker -->
         <script src="plugins/bootstrap-select-1.13.14/js/bootstrap-select.min.js"></script>
         <!-- Input Mask -->
@@ -537,7 +547,44 @@ $prefix = '../';
                                             "lengthMenu": "Mostrar _MENU_ registros por p&aacute;gina'",
                                             "search": "Filtrar:",
                                             "zeroRecords": "Nada encontrado"
-                                        }
+                                        },
+                                        "dom": "Bfrtip",
+                                        "buttons": [
+                                            {
+                                                extend: 'copy',
+                                                title: 'Todas as Pessoas',
+                                                text: 'Copiar'
+                                            },
+                                            {
+                                                extend: 'csv',
+                                                title: 'Todas as Pessoas'
+                                            },
+                                            {
+                                                extend: 'excel',
+                                                title: 'Todas as Pessoas',
+                                                text: 'XLSX'
+                                            },
+                                            {
+                                                extend: 'pdf',
+                                                title: 'Todas as Pessoas'
+                                            },
+                                            {
+                                                extend: 'print',
+                                                title: 'Todas as Pessoas',
+                                                text: 'Imprimir',
+                                                exportOptions: {
+                                                    modifier: {
+                                                        selected: null
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                extend: 'print',
+                                                title: 'Todas as Pessoas Selecionadas',
+                                                text: 'Imprimir Pessoas Selecionadas (Segure SHIFT para selecionar)'
+                                            }
+                                        ],
+                                        "select": true
                                     });
                                 } else {
                                     $('.div-load-page').addClass('d-none');

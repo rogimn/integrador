@@ -32,11 +32,22 @@ class Entrega
         return $this->conn->query("TRUNCATE TABLE entregas");
     }
 
-    // lê todos os registros
+    // lê todos os registros ativos
 
     public function readAll()
     {
-        $sql = $this->conn->prepare("SELECT identrega,idpessoa,pessoa,matricula,idescola,escola,codigo,quantidade,created_at FROM vw_entregas WHERE monitor = :monitor AND CAST(created_at AS VARCHAR) LIKE :created_at ORDER BY created_at,pessoa,matricula");
+        $sql = $this->conn->prepare("SELECT identrega,idpessoa,pessoa,matricula,idescola,escola,codigo,quantidade,created_at FROM vw_entregas WHERE monitor = :monitor ORDER BY created_at,escola,pessoa,matricula,quantidade");
+        $sql->bindParam(':monitor', $this->monitor, PDO::PARAM_BOOL);
+        $sql->execute();
+
+        return $sql;
+    }
+
+    // lê todos os registros filtrando pela data de criação
+
+    public function readAllFilterCreatedAt()
+    {
+        $sql = $this->conn->prepare("SELECT identrega,idpessoa,pessoa,matricula,idescola,escola,codigo,quantidade,created_at FROM vw_entregas WHERE monitor = :monitor AND CAST(created_at AS VARCHAR) LIKE :created_at ORDER BY created_at,escola,pessoa,matricula,quantidade");
         $sql->bindParam(':created_at', $this->created_at, PDO::PARAM_STR);
         $sql->bindParam(':monitor', $this->monitor, PDO::PARAM_BOOL);
         $sql->execute();

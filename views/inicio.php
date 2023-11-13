@@ -56,6 +56,8 @@ $timestamp = new DateTime();
         <link rel="stylesheet" media="print" href="plugins/fontawesome-free/css/all.min.css" onload="this.media='all'">
         <!-- DataTables -->
         <link rel="stylesheet" media="print" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" onload="this.media='all'">
+        <link rel="stylesheet" media="print" href="plugins/datatables-buttons/css/buttons.dataTables.min.css" onload="this.media='all'">
+        <link rel="stylesheet" media="print" href="plugins/datatables-select/css/select.bootstrap4.min.css" onload="this.media='all'">
         <link rel="stylesheet" media="print" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css" onload="this.media='all'">
         <!-- SweetAlert2 -->
         <link rel="stylesheet" media="print" href="plugins/sweetalert2/sweetalert2.min.css" onload="this.media='all'">
@@ -129,7 +131,17 @@ $timestamp = new DateTime();
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">
-                                <i class="fas fa-file-invoice"></i>&nbsp;Entregas
+                                <span>
+                                    <i class="fas fa-file-invoice"></i>&nbsp;Entregas
+                                </span>
+
+                                <span class="ml-2">
+                                    <a class="btn btn-default a-report-entrega" href="entregaReport/all" title="Gerar o relat&oacute;rio de todas as entregas realizadas">Relat&oacute;rio Geral</a>
+                                </span>
+
+                                <!--<span class="ml-2">
+                                    <a class="a-report-entrega" href="entregaReport/month" title="Gerar o relat&oacute;rio de todas as entregas realizadas no m&ecirc;s atual">Relat&oacute;rio Mensal</a>
+                                </span>-->
                             </h3>
 
                             <div class="card-tools">
@@ -362,6 +374,12 @@ $timestamp = new DateTime();
                     <div class="modal-content"></div>
                 </div>
             </div>
+
+            <div class="modal fade" id="modal-report-entrega">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content"></div>
+                </div>
+            </div>
             <!-- /.Modals -->
 
             <?php
@@ -377,8 +395,16 @@ $timestamp = new DateTime();
         <!-- DataTables -->
         <script src="plugins/datatables/jquery.dataTables.min.js"></script>
         <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+        <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+        <script src="plugins/datatables-select/js/dataTables.select.min.js"></script>
         <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
         <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <!-- DataTables Extensions -->
+        <script src="plugins/datatables-buttons/js/jszip.min.js"></script>
+        <script src="plugins/datatables-buttons/js/pdfmake.min.js"></script>
+        <script src="plugins/datatables-buttons/js/vfs_fonts.js"></script>
         <!-- SweetAlert2 -->
         <script src="plugins/sweetalert2/sweetalert2.min.js"></script>
         <!-- DatePicker -->
@@ -559,6 +585,12 @@ $timestamp = new DateTime();
                     $('#modal-edit-entrega').modal('show').find('.modal-content').load($(this).attr('href'));
                 });
 
+                $('.card').on('click', '.a-report-entrega', function (e) {
+                    e.preventDefault();
+
+                    $('#modal-report-entrega').modal('show').find('.modal-content').load($(this).attr('href'));
+                });
+
                 // NOVA NOTA
 
                 $('.form-new-nota').submit(function (e) {
@@ -648,7 +680,7 @@ $timestamp = new DateTime();
                 (async function pullDataDelivery() {
                     await $.ajax({
                         type: 'GET',
-                        url: 'entregaReadAll/<?= $mes . '/' . $ano; ?>',
+                        url: 'entregaReadAllFilterCreatedAt/<?= $mes . '/' . $ano; ?>',
                         dataType: 'JSON',
                         cache: false,
                         beforeSend: function (result) {
@@ -719,6 +751,7 @@ $timestamp = new DateTime();
                                         "lengthChange": false,
                                         "searching": true,
                                         "ordering": true,
+                                        "order": [[5, 'asc']],
                                         "info": true,
                                         "autoWidth": false,
                                         "responsive": true,
@@ -737,7 +770,44 @@ $timestamp = new DateTime();
                                             "lengthMenu": "Mostrar _MENU_ registros por p&aacute;gina'",
                                             "search": "Filtrar:",
                                             "zeroRecords": "Nada encontrado"
-                                        }
+                                        },
+                                        "dom": "Bfrtip",
+                                        "buttons": [
+                                            {
+                                                extend: 'copy',
+                                                title: 'Todas as Entregas',
+                                                text: 'Copiar'
+                                            },
+                                            {
+                                                extend: 'csv',
+                                                title: 'Todas as Entregas'
+                                            },
+                                            {
+                                                extend: 'excel',
+                                                title: 'Todas as Entregas',
+                                                text: 'XLSX'
+                                            },
+                                            {
+                                                extend: 'pdf',
+                                                title: 'Todas as Entregas'
+                                            },
+                                            {
+                                                extend: 'print',
+                                                title: 'Todas as Entregas do m&ecirc;s de <?= mes_extenso($mes); ?> de <?= $ano; ?>',
+                                                text: 'Imprimir as Entregas do m&ecirc;s de <?= mes_extenso($mes); ?>',
+                                                exportOptions: {
+                                                    modifier: {
+                                                        selected: null
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                extend: 'print',
+                                                title: 'Todas as Entregas Selecionadas do m&ecirc;s de <?= mes_extenso($mes); ?> de <?= $ano; ?>',
+                                                text: 'Imprimir as Entregas selecionadas do m&ecirc;s de <?= mes_extenso($mes); ?> <i>(Segure SHIFT+Click para selecionar)</i>'
+                                            }
+                                        ],
+                                        "select": true
                                     });
                                 } else {
                                     $('.div-load-page').addClass('d-none');

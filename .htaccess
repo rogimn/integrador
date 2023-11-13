@@ -41,8 +41,9 @@
 
     # Read URI's
 
+    RewriteRule ^entregaReadAll/?$ controllers/entrega/readAll.php [L]
     ## mes/ano
-    RewriteRule ^entregaReadAll/([A-Za-z0-9]+)/([A-Za-z0-9]+)$ controllers/entrega/readAll.php?d2db8a610f8c7c0785d2d92a6e8c450e=$1&bde9dee6f523d6476dcca9cae8caa5f5=$2 [L]
+    RewriteRule ^entregaReadAllFilterCreatedAt/([A-Za-z0-9]+)/([A-Za-z0-9]+)$ controllers/entrega/readAllFilterCreatedAt.php?d2db8a610f8c7c0785d2d92a6e8c450e=$1&bde9dee6f523d6476dcca9cae8caa5f5=$2 [L]
     RewriteRule ^escolaReadAll/?$ controllers/escola/readAll.php [L]
     RewriteRule ^notaReadAll/?$ controllers/nota/readAll.php [L]
     RewriteRule ^pessoaReadAll/?$ controllers/pessoa/readAll.php [L]
@@ -63,6 +64,10 @@
     RewriteRule ^notaEdit/([A-Za-z0-9]+)$ views/notaEdit.php?e94d72b183558d0cd1c4cf263f235560=$1 [L]
     RewriteRule ^pessoaEdit/([A-Za-z0-9]+)$ views/pessoaEdit.php?5b9f3257ab6a7a150f20f7d4f228559b=$1 [L]
     RewriteRule ^usuarioEdit/([A-Za-z0-9]+)/([A-Za-z0-9]+)$ views/usuarioEdit.php?78eafd55d38a6cdcf6611ca998b01e44=$1&f8032d5cae3de20fcec887f395ec9a6a=$2 [L]
+
+    # Report URI's
+
+    RewriteRule ^entregaReport/([A-Za-z0-9]+)$ views/entregaReport.php?e98d2f001da5678b39482efbdf5770dc=$1 [L]
 
     # Update URI's
 

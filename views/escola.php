@@ -39,6 +39,8 @@ $prefix = '../';
         <link rel="stylesheet" media="print" href="plugins/fontawesome-free/css/all.min.css" onload="this.media='all'">
         <!-- DataTables -->
         <link rel="stylesheet" media="print" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css" onload="this.media='all'">
+        <link rel="stylesheet" media="print" href="plugins/datatables-buttons/css/buttons.dataTables.min.css" onload="this.media='all'">
+        <link rel="stylesheet" media="print" href="plugins/datatables-select/css/select.bootstrap4.min.css" onload="this.media='all'">
         <link rel="stylesheet" media="print" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css" onload="this.media='all'">
         <!-- SweetAlert2 -->
         <link rel="stylesheet" media="print" href="plugins/sweetalert2/sweetalert2.min.css" onload="this.media='all'">
@@ -319,8 +321,16 @@ $prefix = '../';
         <!-- DataTables -->
         <script src="plugins/datatables/jquery.dataTables.min.js"></script>
         <script src="plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+        <script src="plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+        <script src="plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+        <script src="plugins/datatables-buttons/js/buttons.print.min.js"></script>
+        <script src="plugins/datatables-select/js/dataTables.select.min.js"></script>
         <script src="plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
         <script src="plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+        <!-- DataTables Extensions -->
+        <script src="plugins/datatables-buttons/js/jszip.min.js"></script>
+        <script src="plugins/datatables-buttons/js/pdfmake.min.js"></script>
+        <script src="plugins/datatables-buttons/js/vfs_fonts.js"></script>
         <!-- Input Mask -->
         <script src="plugins/inputmask/jquery.inputmask.min.js"></script>
         <!-- SweetAlert2 -->
@@ -470,6 +480,7 @@ $prefix = '../';
                                         "lengthChange": false,
                                         "searching": true,
                                         "ordering": true,
+                                        "order": [[1, 'asc']],
                                         "info": true,
                                         "autoWidth": false,
                                         "responsive": true,
@@ -488,7 +499,44 @@ $prefix = '../';
                                             "lengthMenu": "Mostrar _MENU_ registros por p&aacute;gina'",
                                             "search": "Filtrar:",
                                             "zeroRecords": "Nada encontrado"
-                                        }
+                                        },
+                                        "dom": "Bfrtip",
+                                        "buttons": [
+                                            {
+                                                extend: 'copy',
+                                                title: 'Todas as Escolas',
+                                                text: 'Copiar'
+                                            },
+                                            {
+                                                extend: 'csv',
+                                                title: 'Todas as Escolas'
+                                            },
+                                            {
+                                                extend: 'excel',
+                                                title: 'Todas as Escolas',
+                                                text: 'XLSX'
+                                            },
+                                            {
+                                                extend: 'pdf',
+                                                title: 'Todas as Escolas'
+                                            },
+                                            {
+                                                extend: 'print',
+                                                title: 'Todas as Escolas',
+                                                text: 'Imprimir',
+                                                exportOptions: {
+                                                    modifier: {
+                                                        selected: null
+                                                    }
+                                                }
+                                            },
+                                            {
+                                                extend: 'print',
+                                                title: 'Todas as Escolas Selecionadas',
+                                                text: 'Imprimir Escolas Selecionadas (Segure SHIFT para selecionar)'
+                                            }
+                                        ],
+                                        "select": true
                                     });
                                 } else {
                                     $('.div-load-page').addClass('d-none');

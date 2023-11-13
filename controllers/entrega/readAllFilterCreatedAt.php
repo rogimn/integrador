@@ -25,11 +25,12 @@ $entrega = new Entrega($db);
 
 // controle
 
+$entrega->created_at = $_GET['' . $cfg['qsmd5']['ano'] . ''] . '-' . $_GET['' . $cfg['qsmd5']['mes'] . ''] . '%';
 $entrega->monitor = 1;
 
 // lê todos os registros
 
-$sql = $entrega->readAll();
+$sql = $entrega->readAllFilterCreatedAt();
 
 // verifica se há registros
 

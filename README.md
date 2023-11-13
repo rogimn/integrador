@@ -1,4 +1,4 @@
-# Projeto Integrador II
+# Projeto Integrador II (v 0.6)
 
 ### Plataforma para gerenciar a distribuição de absorventes em escolas públicas
 
@@ -17,7 +17,6 @@
 2. Configure o arquivo de conexão com o banco que está na pasta "config/";
 3. O arquivo "config/app.php" contém configurações gerais e podem ser modificadas ao seu gosto;
 4. Renomeie o arquivo "appInstallDone.php" para "appInstall.php";
-5. O arquivo ".htaccess" têm as primeiras 3 linhas comentadas, talvez seja necessários descomentá-las devido a mudança do ambiente;
- 
+5. O arquivo ".htaccess" têm as primeiras 3 linhas comentadas, talvez seja necessário descomentá-las devido a mudança do ambiente;
 
 > That's All Folks! =)
