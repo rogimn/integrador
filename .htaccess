@@ -85,6 +85,13 @@
     RewriteRule ^pessoaDelete/([A-Za-z0-9]+)$ controllers/pessoa/delete.php?5b9f3257ab6a7a150f20f7d4f228559b=$1 [L]
     RewriteRule ^usuarioDelete/([A-Za-z0-9]+)$ controllers/usuario/delete.php?78eafd55d38a6cdcf6611ca998b01e44=$1 [L]
 
+    # API Read URI's
+
+    RewriteRule ^entregaReadAllAPI/?$ api/entrega/readAll.php [L]
+    RewriteRule ^entregaReadAllFilterCreatedAtAPI/([A-Za-z0-9]+)/([A-Za-z0-9]+)$ api/entrega/readAllFilterCreatedAt.php?d2db8a610f8c7c0785d2d92a6e8c450e=$1&bde9dee6f523d6476dcca9cae8caa5f5=$2 [L]
+    RewriteRule ^escolaReadAllAPI/?$ api/escola/readAll.php [L]
+    RewriteRule ^pessoaReadAllAPI/?$ api/pessoa/readAll.php [L]
+
     #Forçar HTTPS
 
     #RewriteCond %{SERVER_PORT} 80

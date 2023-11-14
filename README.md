@@ -1,11 +1,11 @@
-# Projeto Integrador II (v 0.7)
+# Projeto Integrador II (v 0.8)
 
 ### Plataforma para gerenciar a distribuição de absorventes em escolas públicas
 
 #### Foi desenvolvido com o uso das tecnologias:
 
 - MacOS Bir Sur;
-- Homebrew 4.1.16;
+- Homebrew v4.1.16;
 - Apache v2.4;
 - PHP v7.4;
 - PostgreSQL v14;
