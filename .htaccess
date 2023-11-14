@@ -16,7 +16,7 @@
 
     RewriteRule ^login/?$ index.php [NC,L]
     RewriteRule ^instalacao/?$ appInstall.php [NC,L]
-    #RewriteRule ^backup/?$ appBackup.php [NC,L]
+    RewriteRule ^backup/?$ appBackup.php [NC,L]
     RewriteRule ^sair/?$ appLogout.php [NC,L]
 
     # Main URI's

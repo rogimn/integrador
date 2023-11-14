@@ -1,4 +1,4 @@
-# Projeto Integrador II (v 0.6)
+# Projeto Integrador II (v 0.7)
 
 ### Plataforma para gerenciar a distribuição de absorventes em escolas públicas
 
@@ -18,5 +18,6 @@
 3. O arquivo "config/app.php" contém configurações gerais e podem ser modificadas ao seu gosto;
 4. Renomeie o arquivo "appInstallDone.php" para "appInstall.php";
 5. O arquivo ".htaccess" têm as primeiras 3 linhas comentadas, talvez seja necessário descomentá-las devido a mudança do ambiente;
+6. Opcional: configure a arquivo "appBackup" para gerar cópia de segurança do banco de dados;
 
 > That's All Folks! =)

@@ -22,6 +22,20 @@
                 <i class="fas fa-expand-arrows-alt"></i>
             </a>
         </li>
+
+<?php
+    if ($_SESSION['type'] == true) {
+?>
+
+        <li class="nav-item">
+            <a class="nav-link a-make-bkp" href="#" title="Realizar uma c&oacute;pia de seguran&ccedil;a do banco de dados" role="button" data-toggle="tooltip" data-original-title="Realizar uma c&oacute;pia de seguran&ccedil;a do banco de dados">
+                <i class="fas fa-database"></i>
+            </a>
+        </li>
+
+<?php
+    }
+?>
         
         <li class="nav-item">
             <a class="nav-link a-logout-app" href="#" title="Sair do app" role="button" data-toggle="tooltip" data-original-title="Sair do app">

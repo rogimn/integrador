@@ -1,23 +1,30 @@
 <?php
+// chamada de arquivos necessários
 
-    // call required and included files
+require_once 'config/app.php';
+#require_once 'models/Database.php';
 
-    require_once 'config/app.php';
-    require_once 'config/database.php';
+// controle de sessão ativa
 
-    // user control
-
+if (is_session_started() === TRUE) {
     if (empty($_SESSION['key'])) {
-        header('location:./');
+        header('location: ./');
     }
+}
 
-    // get database connection
+// abre a conexão com o banco
 
-    $database = new Database();
-    $db = $database->getConnection();
+#$database = new Database();
+#$db = $database->getConnection();
 
-    if (!exec("export PGPASSWORD='' && export PGUSER=roger && pg_dump -h localhost tenutti -CdiOv > db/db_name_backup.sql && unset PGPASSWORD && unset PGUSER")) {
-        echo 'falha';
+// executa a exportação 
+// método I: pg_dump -h localhost -p 5432 -U usuario banco_de_dados > destino.sql
+// método II: pg_dump --dbname=postgresql://usuario:senha@servidor:porta/banco_de_dados > destino.sql
+
+if (!exec('pg_dump -h localhost -p 5432 -U rogim integrador > db/bkp/' . date('Ymd_hisa') . '.sql', $output, $result)) {
+    if (!$output) {
+        echo 'true';
     }
+}
 
-    unset($cfg,$database,$db);
+unset($cfg, $database, $db, $output, $result);
